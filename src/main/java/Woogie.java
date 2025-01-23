@@ -3,18 +3,11 @@ import java.util.Scanner;
 public class Woogie {
     public static void main(String[] args) {
         String line = "\n----------------------------------------\n";
-        String greeting = line + "Hello! I'm Woogie\n" +
-                "What can I do for you?" + line;
-
+        String greeting = line + "Hello! I'm Woogie\n" + "What can I do for you?" + line;
         System.out.println(greeting);
 
-        String[] tasks = new String[100];
+        Task[] tasks = new Task[100];
         int taskCount = 0;
-        Boolean statuses[] = new Boolean[100];
-
-        for (int i = 0; i < 100; i++) {
-            statuses[i] = false;
-        }
 
         Scanner scanner = new Scanner(System.in);
 
@@ -30,13 +23,11 @@ public class Woogie {
                 if (taskCount == 0) {
                     System.out.println(line + "nothing here yet TT" + line);
                 } else {
-                    String taskList = "";
-
+                    System.out.println(line);
                     for (int i = 0; i < taskCount; i++) {
-                        String state = statuses[i] ? "X" : " ";
-                        taskList = taskList + (i+1) + ".[" + state + "] " + tasks[i] + "\n";
+                        System.out.println((i + 1) + "." + tasks[i]);
                     }
-                    System.out.println(line + taskList + line);
+                    System.out.println(line);
                 }
             } else if (input.startsWith("mark")) {
                 String[] parts = input.split(" ");
@@ -51,8 +42,8 @@ public class Woogie {
                     continue;
                 }
 
-                statuses[taskIndex] = true;
-                System.out.println(line + "Nice! I've marked this task as done: \n  [X] " + tasks[taskIndex] + line);
+                tasks[taskIndex].markDone();
+                System.out.println(line + "Nice! I've marked this task as done: \n  " + tasks[taskIndex] + line);
             } else if (input.startsWith("unmark")) {
                 String[] parts = input.split(" ");
                 if (parts.length < 2) {
@@ -66,16 +57,42 @@ public class Woogie {
                     continue;
                 }
 
-                statuses[taskIndex] = false;
-                System.out.println(line + "Ok, I've marked this task as not done yet: \n  [ ] " + tasks[taskIndex] + line);
-            } else {
-                if (taskCount < 100) {
-                    tasks[taskCount] = input;
-                    taskCount++;
-                    System.out.println(line + "added: " + input + line);
-                } else {
+                tasks[taskIndex].markUndone();
+                System.out.println(line + "Ok, I've marked this task as not done yet: \n  " + tasks[taskIndex] + line);
+            } else if (input.startsWith("todo")) {
+                if (taskCount >= 100) {
                     System.out.println(line + "no more space <3" + line);
                 }
+                String description = input.substring(5);
+                tasks[taskCount] = new ToDo(description);
+                taskCount++;
+                System.out.println(line + "Got it. I've added this task:\n  " + tasks[taskCount - 1] + "\nNow you have "
+                        + taskCount + " tasks in the list." + line);
+            } else if (input.startsWith("deadline")) {
+                if (taskCount >= 100) {
+                    System.out.println(line + "no more space <3" + line);
+                }
+                String[] parts = input.split(" /by ");
+                String description = parts[0].substring(9);
+                String by = parts[1];
+                tasks[taskCount] = new Deadline(description, by);
+                taskCount++;
+                System.out.println(line + "Got it. I've added this task:\n  " + tasks[taskCount - 1] + "\nNow you have "
+                        + taskCount + " tasks in the list." + line);
+            } else if (input.startsWith("event")) {
+                if (taskCount >= 100) {
+                    System.out.println(line + "no more space <3" + line);
+                }
+                String[] parts = input.split(" /from | /to");
+                String description = parts[0].substring(6);
+                String from = parts[1];
+                String to = parts[2];
+                tasks[taskCount] = new Event(description, from, to);
+                taskCount++;
+                System.out.println(line + "Got it. I've added this task:\n  " + tasks[taskCount - 1] + "\nNow you have "
+                        + taskCount + " tasks in the list." + line);
+            } else {
+                System.out.println(line + "idk this command ;-;" + line);
             }
         }
 
