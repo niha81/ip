@@ -10,6 +10,11 @@ public class Woogie {
 
         String[] tasks = new String[100];
         int taskCount = 0;
+        Boolean statuses[] = new Boolean[100];
+
+        for (int i = 0; i < 100; i++) {
+            statuses[i] = false;
+        }
 
         Scanner scanner = new Scanner(System.in);
 
@@ -26,11 +31,43 @@ public class Woogie {
                     System.out.println(line + "nothing here yet TT" + line);
                 } else {
                     String taskList = "";
+
                     for (int i = 0; i < taskCount; i++) {
-                        taskList = taskList + (i+1) + ". " + tasks[i] + "\n";
+                        String state = statuses[i] ? "X" : " ";
+                        taskList = taskList + (i+1) + ".[" + state + "] " + tasks[i] + "\n";
                     }
                     System.out.println(line + taskList + line);
                 }
+            } else if (input.startsWith("mark")) {
+                String[] parts = input.split(" ");
+                if (parts.length < 2) {
+                    System.out.println(line + "INVALID! Pls specify task number :)" + line);
+                    continue;
+                }
+                int taskIndex = Integer.parseInt(parts[1]) - 1;
+
+                if (taskIndex < 0 || taskIndex >= taskCount) {
+                    System.out.println(line + "pls choose a task between 1 and " + taskCount + "." + line);
+                    continue;
+                }
+
+                statuses[taskIndex] = true;
+                System.out.println(line + "Nice! I've marked this task as done: \n  [X] " + tasks[taskIndex] + line);
+            } else if (input.startsWith("unmark")) {
+                String[] parts = input.split(" ");
+                if (parts.length < 2) {
+                    System.out.println(line + "INVALID! Pls specify task number :)" + line);
+                    continue;
+                }
+                int taskIndex = Integer.parseInt(parts[1]) - 1;
+
+                if (taskIndex < 0 || taskIndex >= taskCount) {
+                    System.out.println(line + "pls choose a task between 1 and " + taskCount + "." + line);
+                    continue;
+                }
+
+                statuses[taskIndex] = false;
+                System.out.println(line + "Ok, I've marked this task as not done yet: \n  [ ] " + tasks[taskIndex] + line);
             } else {
                 if (taskCount < 100) {
                     tasks[taskCount] = input;
