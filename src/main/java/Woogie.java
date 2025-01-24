@@ -43,7 +43,7 @@ public class Woogie {
                 }
 
                 tasks[taskIndex].markDone();
-                System.out.println(line + "Nice! I've marked this task as done: \n  " + tasks[taskIndex] + line);
+                System.out.println(line + "Nice! I've marked this task as done:\n  " + tasks[taskIndex] + line);
             } else if (input.startsWith("unmark")) {
                 String[] parts = input.split(" ");
                 if (parts.length < 2) {
@@ -58,7 +58,7 @@ public class Woogie {
                 }
 
                 tasks[taskIndex].markUndone();
-                System.out.println(line + "Ok, I've marked this task as not done yet: \n  " + tasks[taskIndex] + line);
+                System.out.println(line + "Ok, I've marked this task as not done yet:\n  " + tasks[taskIndex] + line);
             } else if (input.startsWith("todo")) {
                 if (taskCount >= 100) {
                     System.out.println(line + "no more space <3" + line);
