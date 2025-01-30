@@ -3,42 +3,49 @@ import java.util.Scanner;
 
 public class Woogie {
     private static final String LINE = "\n----------------------------------------------------\n";
+    private static final String FILE_PATH = "./data/woogie.txt";
+    private static Storage storage = new Storage(FILE_PATH);
+
     public static void main(String[] args) {
+        ArrayList<Task> tasks = storage.loadTasks();
+
         String greeting = LINE + "Hello! I'm Woogie\n" + "What can I do for you?" + LINE;
         System.out.println(greeting);
 
-        ArrayList<Task> tasks = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            String input = scanner.nextLine();
+            String input = scanner.nextLine().trim();
 
             if (input.equalsIgnoreCase("bye")) {
                 System.out.println(LINE + "Bye. Hope to see you again soon!" + LINE);
                 break;
             }
 
-            if (input.equalsIgnoreCase("list")) {
-                listTasks(tasks);
-            } else if (input.startsWith("mark")) {
-                markAsDone(tasks, input);
-            } else if (input.startsWith("unmark")) {
-                markAsNotDone(tasks, input);
-            } else if (input.startsWith("todo")) {
-                addTodo(tasks, input);
-            } else if (input.startsWith("deadline")) {
-                addDeadline(tasks, input);
-            } else if (input.startsWith("event")) {
-                addEvent(tasks, input);
-            } else if (input.startsWith("delete")) {
-                deleteTask(tasks, input);
-            } else {
-                System.out.println(LINE + "sorry idk this command ;-;" + LINE);
-            }
-
+            processCommand(tasks, input);
+            storage.saveTasks(tasks);
         }
-
         scanner.close();
+    }
+
+    private static void processCommand(ArrayList<Task> tasks, String input) {
+        if (input.equalsIgnoreCase("list")) {
+            listTasks(tasks);
+        } else if (input.startsWith("mark")) {
+            markAsDone(tasks, input);
+        } else if (input.startsWith("unmark")) {
+            markAsNotDone(tasks, input);
+        } else if (input.startsWith("todo")) {
+            addTodo(tasks, input);
+        } else if (input.startsWith("deadline")) {
+            addDeadline(tasks, input);
+        } else if (input.startsWith("event")) {
+            addEvent(tasks, input);
+        } else if (input.startsWith("delete")) {
+            deleteTask(tasks, input);
+        } else {
+            System.out.println(LINE + "sorry idk this command ;-;" + LINE);
+        }
     }
 
     private static void listTasks(ArrayList<Task> tasks) {
