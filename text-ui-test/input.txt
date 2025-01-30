@@ -1,10 +1,18 @@
 list
+todo
 todo one
+deadline
+deadline /by sun
 deadline two /by sun
 event three /from mon 2pm /to 4pm
 list
+mark
+mark 8
 mark 1
+mark 2
 list
-unmark 1
+unmark 2
+list
+delete 1
 list
 bye
