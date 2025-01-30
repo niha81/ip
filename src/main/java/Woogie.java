@@ -119,6 +119,9 @@ public class Woogie {
             if (parts[1].trim().isEmpty()) {
                 throw new IllegalArgumentException("deadline's /by time cannot be empty!");
             }
+            if (!parts[1].matches("\\d{4}-\\d{2}-\\d{2} \\d{4}")) { // Ensure correct format
+                throw new IllegalArgumentException("deadline must be in yyyy-MM-dd HHmm format!");
+            }
 
             String description = parts[0].substring(9);
             String by = parts[1];
@@ -139,20 +142,24 @@ public class Woogie {
         }
 
         try {
-            String[] parts = input.split(" /from | /to ", 3);
-            if (parts.length < 3 || parts[0].length() <= 6 || parts[0].substring(6).trim().isEmpty()) {
+            String[] firstSplit = input.split(" /from ", 2);
+            if (firstSplit.length < 2 || firstSplit[0].substring(6).trim().isEmpty()) {
                 throw new IllegalArgumentException("event's description cannot be empty, pls add one >:(");
             }
-            if (parts[1].trim().isEmpty()) {
-                throw new IllegalArgumentException("event's /from time cannot be empty!");
-            }
-            if (parts[2].trim().isEmpty()) {
-                throw new IllegalArgumentException("event's /to time cannot be empty!");
+
+            String description = firstSplit[0].substring(6).trim();
+            String[] secondSplit = firstSplit[1].split(" /to ", 2);
+            if (secondSplit.length < 2 || secondSplit[0].trim().isEmpty() || secondSplit[1].trim().isEmpty()) {
+                throw new IllegalArgumentException("event's /from and /to times cannot be empty!");
             }
 
-            String description = parts[0].substring(6);
-            String from = parts[1];
-            String to = parts[2];
+            String from = secondSplit[0].trim();
+            String to = secondSplit[1].trim();
+
+            if (!from.matches("\\d{4}-\\d{2}-\\d{2} \\d{4}") || !to.matches("\\d{4}-\\d{2}-\\d{2} \\d{4}")) {
+                throw new IllegalArgumentException("event times must be in yyyy-MM-dd HHmm format!");
+            }
+
             Task newTask = new Event(description, from, to);
             addTask(tasks, newTask);
         } catch (ArrayIndexOutOfBoundsException e) {
