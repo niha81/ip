@@ -1,3 +1,8 @@
+package woogie.list;
+
+import woogie.task.Task;
+import woogie.ui.Ui;
+
 import java.util.ArrayList;
 
 public class TaskList {
@@ -32,7 +37,7 @@ public class TaskList {
             ui.showMessage("Noted. I've removed this task:\n  " + rem + "\nNow you have " + tasks.size()
                     + " tasks in the list ٩>ᴗ<)و.");
         } catch (NumberFormatException e) {
-            ui.showError("Task number must be a valid number :)");
+            ui.showError("woogie.task.Task number must be a valid number :)");
         } catch (IndexOutOfBoundsException e) {
             ui.showMessage("INVALID! pls choose a task between 1 and " + tasks.size() + "  (•̀⤙•́ ).");
         }
@@ -49,7 +54,7 @@ public class TaskList {
             tasks.get(taskIndex).markDone();
             ui.showMessage("Nice! I've marked this task as done:\n  " + tasks.get(taskIndex));
         } catch (NumberFormatException e) {
-            ui.showError("Task number must be a valid number :)");
+            ui.showError("woogie.task.Task number must be a valid number :)");
         } catch (IndexOutOfBoundsException e) {
             ui.showMessage("INVALID! pls choose a task between 1 and " + tasks.size() + " (•̀⤙•́ ).");
         }
@@ -67,7 +72,7 @@ public class TaskList {
             tasks.get(taskIndex).markUndone();
             ui.showMessage("Ok, I've marked this task as not done yet:\n  " + tasks.get(taskIndex));
         } catch (NumberFormatException e) {
-            ui.showError("Task number must be a valid number :)");
+            ui.showError("woogie.task.Task number must be a valid number :)");
         } catch (IndexOutOfBoundsException e) {
             ui.showMessage("INVALID! pls choose a task between 1 and " + tasks.size() + " (•̀⤙•́ ).");
         }
