@@ -1,3 +1,7 @@
+package woogie.storage;
+
+import woogie.task.Task;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.FileReader;

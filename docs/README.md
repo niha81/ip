@@ -1,4 +1,4 @@
-# Woogie User Guide
+# woogie.Woogie User Guide
 
 // Update the title above to match the actual product name
 

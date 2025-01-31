@@ -1,3 +1,10 @@
+package woogie;
+
+import woogie.command.Parser;
+import woogie.list.TaskList;
+import woogie.storage.Storage;
+import woogie.ui.Ui;
+
 public class Woogie {
     private static final String FILE_PATH = "./data/woogie.txt";
     private Storage storage;

@@ -1,3 +1,12 @@
+package woogie.command;
+
+import woogie.list.TaskList;
+import woogie.task.Deadline;
+import woogie.task.Event;
+import woogie.task.Task;
+import woogie.task.ToDo;
+import woogie.ui.Ui;
+
 public class Parser {
     public static void processCommand(String input, TaskList tasks, Ui ui) {
         if (input.equalsIgnoreCase("bye")) {

@@ -1,3 +1,7 @@
+package woogie.task;
+
+import woogie.task.Task;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 

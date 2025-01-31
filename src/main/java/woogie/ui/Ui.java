@@ -1,15 +1,17 @@
+package woogie.ui;
+
 import java.util.Scanner;
 
 public class Ui {
     private Scanner scanner;
-    private static final String LINE = "\n------------------------------------------------------------\n";
+    private static final String LINE = "\n---------------------------------------------------------------\n";
 
     public Ui() {
         scanner = new Scanner(System.in);
     }
 
     public void showGreeting() {
-        System.out.println(LINE + "｡ﾟ☆ Greetings! I'm Woogie ☆ﾟ\n" + "How can I help you?" + LINE);
+        System.out.println(LINE + "｡ﾟ☆ Greetings! I'm woogie.Woogie ☆ﾟ\n" + "How can I help you?" + LINE);
     }
 
     public void showGoodbye() {
