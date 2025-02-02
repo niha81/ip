@@ -15,6 +15,7 @@ public class TaskList {
     }
 
     public TaskList() {
+        this.tasks = new ArrayList<>();
         ui = new Ui();
     }
 

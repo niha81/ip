@@ -37,7 +37,8 @@ public class Storage {
         File file = new File(filePath);
 
         if (!file.exists()) {
-            return tasks; // Return empty list if file does not exist
+            file.getParentFile().mkdirs();
+            return tasks;
         }
 
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
