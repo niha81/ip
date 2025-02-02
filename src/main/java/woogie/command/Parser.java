@@ -7,7 +7,18 @@ import woogie.task.Task;
 import woogie.task.ToDo;
 import woogie.ui.Ui;
 
+/**
+ * Handles the processing of user commands.
+ * Determines the appropriate actions to take based on user input.
+ */
 public class Parser {
+    /**
+     * Processes user input and executes the corresponding command.
+     *
+     * @param input User input command.
+     * @param tasks TaskList containing the tasks.
+     * @param ui    User interface for displaying messages.
+     */
     public static void processCommand(String input, TaskList tasks, Ui ui) {
         if (input.equalsIgnoreCase("bye")) {
             ui.showGoodbye();
@@ -31,6 +42,13 @@ public class Parser {
         }
     }
 
+    /**
+     * Adds a ToDo task to the TaskList.
+     *
+     * @param tasks TaskList where the task will be added.
+     * @param input User input command for adding a ToDo.
+     * @param ui    User interface for displaying messages.
+     */
     private static void addTodo(TaskList tasks, String input, Ui ui) {
         if (input.length() <= 5 || input.substring(5).trim().isEmpty()) {
             ui.showMessage("todo's description cannot be empty, pls add one >:(");
@@ -41,6 +59,13 @@ public class Parser {
         tasks.addTask(newTask);
     }
 
+    /**
+     * Adds a Deadline task to the TaskList.
+     *
+     * @param tasks TaskList where the task will be added.
+     * @param input User input command for adding a Deadline.
+     * @param ui    User interface for displaying messages.
+     */
     private static void addDeadline(TaskList tasks, String input, Ui ui) {
         if (!input.contains(" /by ")) {
             ui.showMessage("you can't have a deadline without a deadline, add a /by :)");
@@ -70,6 +95,13 @@ public class Parser {
         }
     }
 
+    /**
+     * Adds an Event task to the TaskList.
+     *
+     * @param tasks TaskList where the task will be added.
+     * @param input User input command for adding an Event.
+     * @param ui    User interface for displaying messages.
+     */
     private static void addEvent(TaskList tasks, String input, Ui ui) {
         if (!input.contains(" /from ") || !input.contains(" /to ")) {
             ui.showMessage("i need to know when your event starts and ends,\n" + "pls add both a /from and /to :<");

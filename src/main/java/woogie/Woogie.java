@@ -5,18 +5,31 @@ import woogie.list.TaskList;
 import woogie.storage.Storage;
 import woogie.ui.Ui;
 
+/**
+ * The main entry point for the Woogie chatbot.
+ * Processes user input and manages tasks.
+ */
 public class Woogie {
+    /** File path where tasks are stored. */
     private static final String FILE_PATH = "./data/woogie.txt";
     private Storage storage;
     private TaskList tasks;
     private Ui ui;
 
+    /**
+     * Initializes the Woogie chatbot.
+     * Loads saved tasks and prepares for user input.
+     */
     public Woogie() {
         ui = new Ui();
         storage = new Storage(FILE_PATH);
         tasks = new TaskList(storage.loadTasks());
     }
 
+    /**
+     * Runs the chatbot by processing user commands in a loop.
+     * Saves tasks after each command execution.
+     */
     public void run() {
         ui.showGreeting();
         while (true) {
@@ -31,6 +44,11 @@ public class Woogie {
         }
     }
 
+    /**
+     * Starts the Woogie chatbot.
+     *
+     * @param args Command-line arguments (not used).
+     */
     public static void main(String[] args) {
         new Woogie().run();
     }
