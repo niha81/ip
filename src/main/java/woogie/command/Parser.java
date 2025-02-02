@@ -22,7 +22,7 @@ public class Parser {
     public static void processCommand(String input, TaskList tasks, Ui ui) {
         if (input.equalsIgnoreCase("bye")) {
             ui.showGoodbye();
-            System.exit(0);
+            return;
         } else if (input.equalsIgnoreCase("list")) {
             tasks.listTasks();
         } else if (input.startsWith("mark")) {
