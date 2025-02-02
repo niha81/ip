@@ -21,6 +21,10 @@ public abstract class Task {
         return this.isDone;
     }
 
+    public String getDescription() {
+        return this.description;
+    }
+
     public abstract String toFileFormat();
 
     public static Task fromFileFormat(String line) {
