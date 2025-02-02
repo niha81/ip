@@ -15,7 +15,7 @@ public class Ui {
     }
 
     public void showGoodbye() {
-        System.out.println(LINE + "It pains me to have to part ways ૮(˶ㅠ︿ㅠ)ა.\nHope to see you again soon!" + LINE);
+        System.out.println(LINE + "It pains me to have to part ways ૮(˶ㅠ︿ㅠ).\nHope to see you again soon!" + LINE);
     }
 
     public void showLine() {

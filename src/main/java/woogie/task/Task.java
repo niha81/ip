@@ -17,6 +17,10 @@ public abstract class Task {
         this.isDone = false;
     }
 
+    public boolean getStatus() {
+        return this.isDone;
+    }
+
     public abstract String toFileFormat();
 
     public static Task fromFileFormat(String line) {

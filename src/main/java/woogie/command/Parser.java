@@ -64,7 +64,7 @@ public class Parser {
             Task newTask = new Deadline(description, by);
             tasks.addTask(newTask);
         } catch (ArrayIndexOutOfBoundsException e) {
-            ui.showMessage("oop, smt went wrong with your deadline input ( ˶°ㅁ°) !!");
+            ui.showMessage("oop, smt went wrong with your deadline input ( ˶°o°) !!");
         } catch (IllegalArgumentException e) {
             ui.showError(e.getMessage());
         }
@@ -98,7 +98,7 @@ public class Parser {
             Task newTask = new Event(description, from, to);
             tasks.addTask(newTask);
         } catch (ArrayIndexOutOfBoundsException e) {
-            ui.showMessage("oop, smt went wrong with your event input ( ˶°ㅁ°) !!");
+            ui.showMessage("oop, smt went wrong with your event input ( ˶°o°) !!");
         } catch (IllegalArgumentException e) {
             ui.showError(e.getMessage());
         }
