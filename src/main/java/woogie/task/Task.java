@@ -44,6 +44,10 @@ public abstract class Task {
         return this.isDone;
     }
 
+    public String getDescription() {
+        return this.description;
+    }
+
     /**
      * Returns a string representation of the task in file format.
      * This method is implemented in subclasses.

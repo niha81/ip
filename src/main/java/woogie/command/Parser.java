@@ -37,6 +37,13 @@ public class Parser {
             addEvent(tasks, input, ui);
         } else if (input.startsWith("delete")) {
             tasks.deleteTask(input);
+        } else if (input.startsWith("find")) {
+            String keyword = input.substring(5).trim();
+            if (keyword.isEmpty()) {
+                ui.showMessage("Please enter a keyword to search for.");
+            } else {
+                tasks.findTask(keyword);
+            }
         } else {
             ui.showMessage("sorry idk this command ;-;");
         }
@@ -51,7 +58,7 @@ public class Parser {
      */
     private static void addTodo(TaskList tasks, String input, Ui ui) {
         if (input.length() <= 5 || input.substring(5).trim().isEmpty()) {
-            ui.showMessage("todo's description cannot be empty, pls add one >:(");
+            ui.showMessage("todo's description cannot be empty, pls add one (•¬•)");
             return;
         }
         String description = input.substring(5).trim();
@@ -68,17 +75,14 @@ public class Parser {
      */
     private static void addDeadline(TaskList tasks, String input, Ui ui) {
         if (!input.contains(" /by ")) {
-            ui.showMessage("you can't have a deadline without a deadline, add a /by :)");
+            ui.showMessage("you can't have a deadline without a deadline, add a /by (•︿•)");
             return;
         }
 
         try {
             String[] parts = input.split(" /by ", 2);
             if (parts[0].length() <= 9 || parts[0].substring(9).trim().isEmpty()) {
-                throw new IllegalArgumentException("deadline's description cannot be empty, pls add one >:(");
-            }
-            if (parts[1].trim().isEmpty()) {
-                throw new IllegalArgumentException("deadline's /by time cannot be empty!");
+                throw new IllegalArgumentException("deadline's description cannot be empty, pls add one (•¬•)");
             }
             if (!parts[1].matches("\\d{4}-\\d{2}-\\d{2} \\d{4}")) { // Ensure correct format
                 throw new IllegalArgumentException("deadline must be in yyyy-MM-dd HHmm format!");
@@ -89,7 +93,7 @@ public class Parser {
             Task newTask = new Deadline(description, by);
             tasks.addTask(newTask);
         } catch (ArrayIndexOutOfBoundsException e) {
-            ui.showMessage("oop, smt went wrong with your deadline input ( ˶°o°) !!");
+            ui.showMessage("oop, smt went wrong with your deadline input (°△°)!!");
         } catch (IllegalArgumentException e) {
             ui.showError(e.getMessage());
         }
@@ -104,20 +108,21 @@ public class Parser {
      */
     private static void addEvent(TaskList tasks, String input, Ui ui) {
         if (!input.contains(" /from ") || !input.contains(" /to ")) {
-            ui.showMessage("i need to know when your event starts and ends,\n" + "pls add both a /from and /to :<");
+            ui.showMessage("i need to know when your event starts and ends,\n" + "pls add both a /from and /to (•︿•)");
             return;
         }
 
         try {
             String[] firstSplit = input.split(" /from ", 2);
             if (firstSplit.length < 2 || firstSplit[0].substring(6).trim().isEmpty()) {
-                throw new IllegalArgumentException("event's description cannot be empty, pls add one >:(");
+                throw new IllegalArgumentException("event's description cannot be empty, pls add one (•¬•)");
             }
 
             String description = firstSplit[0].substring(6).trim();
             String[] secondSplit = firstSplit[1].split(" /to ", 2);
             if (secondSplit.length < 2 || secondSplit[0].trim().isEmpty() || secondSplit[1].trim().isEmpty()) {
-                throw new IllegalArgumentException("event's /from and /to times cannot be empty!");
+                throw new IllegalArgumentException("i need to know when your event starts and ends,\\n\" + " +
+                        "\"pls add both a /from and /to (•︿•)");
             }
 
             String from = secondSplit[0].trim();
@@ -130,7 +135,7 @@ public class Parser {
             Task newTask = new Event(description, from, to);
             tasks.addTask(newTask);
         } catch (ArrayIndexOutOfBoundsException e) {
-            ui.showMessage("oop, smt went wrong with your event input ( ˶°o°) !!");
+            ui.showMessage("oop, smt went wrong with your event input (°△°)!!");
         } catch (IllegalArgumentException e) {
             ui.showError(e.getMessage());
         }

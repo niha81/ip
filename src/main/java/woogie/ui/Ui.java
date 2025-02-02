@@ -24,14 +24,14 @@ public class Ui {
      * Displays the chatbot's greeting message.
      */
     public void showGreeting() {
-        System.out.println(LINE + "｡ﾟ☆ Greetings! I'm woogie.Woogie ☆ﾟ\n" + "How can I help you?" + LINE);
+        System.out.println(LINE + "* Greetings! I'm Woogie *･ﾟ✧\n" + "How can I help you?" + LINE);
     }
 
     /**
      * Displays the chatbot's farewell message.
      */
     public void showGoodbye() {
-        System.out.println(LINE + "It pains me to have to part ways ૮(˶ㅠ︿ㅠ).\nHope to see you again soon!" + LINE);
+        System.out.println(LINE + "It pains me to have to part ways ૮(ㅠ-ㅠ).\nHope to see you again soon!" + LINE);
     }
 
     /**
@@ -65,6 +65,6 @@ public class Ui {
      * @param message The error message to be displayed.
      */
     public void showError(String message) {
-        System.out.println(LINE + "OOP! smt went wrong: " + message + " (ꞋꞌꞋꞌŏ_ŏ)" + LINE);
+        System.out.println(LINE + "OOP! smt went wrong:\n" + message + LINE);
     }
 }

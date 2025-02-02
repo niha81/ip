@@ -71,7 +71,7 @@ public class TaskList {
         } catch (NumberFormatException e) {
             ui.showError("woogie.task.Task number must be a valid number :)");
         } catch (IndexOutOfBoundsException e) {
-            ui.showMessage("INVALID! pls choose a task between 1 and " + tasks.size() + "  (•̀⤙•́ ).");
+            ui.showMessage("INVALID! pls choose a task between 1 and " + tasks.size() + "  (•⌓•).");
         }
     }
 
@@ -93,7 +93,7 @@ public class TaskList {
         } catch (NumberFormatException e) {
             ui.showError("woogie.task.Task number must be a valid number :)");
         } catch (IndexOutOfBoundsException e) {
-            ui.showMessage("INVALID! pls choose a task between 1 and " + tasks.size() + " (•̀⤙•́ ).");
+            ui.showMessage("INVALID! pls choose a task between 1 and " + tasks.size() + " (•⌓•).");
         }
     }
 
@@ -116,7 +116,7 @@ public class TaskList {
         } catch (NumberFormatException e) {
             ui.showError("woogie.task.Task number must be a valid number :)");
         } catch (IndexOutOfBoundsException e) {
-            ui.showMessage("INVALID! pls choose a task between 1 and " + tasks.size() + " (•̀⤙•́ ).");
+            ui.showMessage("INVALID! pls choose a task between 1 and " + tasks.size() + " (•⌓•).");
         }
     }
 
@@ -135,4 +135,30 @@ public class TaskList {
             ui.showLine();
         }
     }
+
+    /**
+     * Finds tasks that contain the specified keyword in their descriptions.
+     *
+     * @param keyword The keyword to search for in task descriptions.
+     */
+    public void findTask(String keyword) {
+        ArrayList<Task> matchingTasks = new ArrayList<>();
+
+        for (Task task : tasks) {
+            if (task.getDescription().toLowerCase().contains(keyword.toLowerCase())) {
+                matchingTasks.add(task);
+            }
+        }
+
+        if (matchingTasks.isEmpty()) {
+            ui.showMessage("No matching tasks found ;-;");
+        } else {
+            ui.showMessage("Here are the matching tasks in your list:");
+            for (int i = 0; i < matchingTasks.size(); i++) {
+                System.out.println((i + 1) + "." + matchingTasks.get(i));
+            }
+            ui.showLine();
+        }
+    }
+
 }
