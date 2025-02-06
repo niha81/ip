@@ -7,10 +7,10 @@ import java.util.Scanner;
  * Manages user prompts, messages, and errors.
  */
 public class Ui {
-    /** Scanner object for reading user input. */
-    private Scanner scanner;
     /** Constant line separator for formatting messages. */
     private static final String LINE = "\n---------------------------------------------------------------\n";
+    /** Scanner object for reading user input. */
+    private Scanner scanner;
 
     /**
      * Initializes the user interface.

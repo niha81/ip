@@ -1,9 +1,9 @@
 package woogie.list;
+import java.util.ArrayList;
 
 import woogie.task.Task;
 import woogie.ui.Ui;
 
-import java.util.ArrayList;
 
 /**
  * Manages the list of tasks in Woogie.

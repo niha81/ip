@@ -8,10 +8,10 @@ import java.time.format.DateTimeFormatter;
  * An Event task has a specific start date/time and an end date/time.
  */
 public class Event extends Task {
-    private LocalDateTime from;
-    private LocalDateTime to;
     private static final DateTimeFormatter INPUT_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
     private static final DateTimeFormatter OUTPUT_FORMATTER = DateTimeFormatter.ofPattern("MMM d yyyy, h:mm a");
+    private LocalDateTime from;
+    private LocalDateTime to;
 
     /**
      * Initializes a new Event task with a description, start time, and end time.

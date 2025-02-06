@@ -1,14 +1,16 @@
 package woogie.list;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import woogie.task.Task;
-import woogie.task.ToDo;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import woogie.task.Task;
+import woogie.task.ToDo;
 
 public class TaskListTest {
 
@@ -27,7 +29,7 @@ public class TaskListTest {
     }
 
     @Test
-    public void testDeleteTask_Valid() {
+    public void testDeleteTaskValid() {
         Task task1 = new ToDo("Read book");
         Task task2 = new ToDo("Write notes");
         taskList.addTask(task1);
@@ -38,7 +40,7 @@ public class TaskListTest {
     }
 
     @Test
-    public void testDeleteTask_InvalidIndex() {
+    public void testDeleteTaskInvalidIndex() {
         Task task = new ToDo("Buy groceries");
         taskList.addTask(task);
 

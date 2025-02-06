@@ -1,20 +1,18 @@
 package woogie;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.ArrayList;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import woogie.list.TaskList;
 import woogie.storage.Storage;
 import woogie.task.Task;
 import woogie.task.ToDo;
 import woogie.ui.Ui;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.util.ArrayList;
 
 public class WoogieTest {
     private Woogie woogie;

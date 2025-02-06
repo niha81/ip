@@ -8,9 +8,9 @@ import java.time.format.DateTimeFormatter;
  * A Deadline task has a specific date and time by which it must be completed.
  */
 public class Deadline extends Task {
-    private LocalDateTime by;
     private static final DateTimeFormatter INPUT_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
     private static final DateTimeFormatter OUTPUT_FORMATTER = DateTimeFormatter.ofPattern("MMM d yyyy, h:mm a");
+    private LocalDateTime by;
 
     /**
      * Initializes a new Deadline task with a description and due date.

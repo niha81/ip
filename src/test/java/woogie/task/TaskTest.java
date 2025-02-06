@@ -1,12 +1,13 @@
 package woogie.task;
 
-import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.Test;
 public class TaskTest {
 
     @Test
@@ -25,7 +26,7 @@ public class TaskTest {
     }
 
     @Test
-    public void testFromFileFormat_Todo() {
+    public void testFromFileFormatTodo() {
         Task task = Task.fromFileFormat("T | 1 | Buy milk");
         assertNotNull(task, "Task should not be null.");
         assertInstanceOf(ToDo.class, task, "Task should be an instance of ToDo.");
@@ -33,7 +34,7 @@ public class TaskTest {
     }
 
     @Test
-    public void testFromFileFormat_InvalidFormat() {
+    public void testFromFileFormatInvalidFormat() {
         Task task = Task.fromFileFormat("X | 0 | Invalid task");
         assertNull(task, "Invalid task format should return null.");
     }
