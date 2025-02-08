@@ -1,9 +1,8 @@
 package woogie.list;
+import java.util.ArrayList;
 
 import woogie.task.Task;
 import woogie.ui.Ui;
-
-import java.util.ArrayList;
 
 /**
  * Manages the list of tasks in Woogie.
@@ -91,7 +90,7 @@ public class TaskList {
             tasks.get(taskIndex).markDone();
             ui.showMessage("Nice! I've marked this task as done:\n  " + tasks.get(taskIndex));
         } catch (NumberFormatException e) {
-            ui.showError("woogie.task.Task number must be a valid number :)");
+            ui.showError("Task number must be a valid number :)");
         } catch (IndexOutOfBoundsException e) {
             ui.showMessage("INVALID! pls choose a task between 1 and " + tasks.size() + " (•⌓•).");
         }
@@ -114,7 +113,7 @@ public class TaskList {
             tasks.get(taskIndex).markUndone();
             ui.showMessage("Ok, I've marked this task as not done yet:\n  " + tasks.get(taskIndex));
         } catch (NumberFormatException e) {
-            ui.showError("woogie.task.Task number must be a valid number :)");
+            ui.showError("Task number must be a valid number :)");
         } catch (IndexOutOfBoundsException e) {
             ui.showMessage("INVALID! pls choose a task between 1 and " + tasks.size() + " (•⌓•).");
         }
@@ -161,4 +160,126 @@ public class TaskList {
         }
     }
 
+    /**
+     * Returns the list of tasks as a formatted string.
+     *
+     * @return A string representation of the task list.
+     */
+    public String getTaskListAsString() {
+        if (tasks.isEmpty()) {
+            return "nothing here yet TT";
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < tasks.size(); i++) {
+            sb.append((i + 1)).append(". ").append(tasks.get(i)).append("\n");
+        }
+        return sb.toString();
+    }
+
+    /**
+     * Marks a specified task as done and returns a response message.
+     *
+     * @param input The user input containing the task number.
+     * @return A response message confirming the task is marked done or an error message.
+     */
+    public String markTaskWithResponse(String input) {
+        String[] parts = input.split(" ");
+        if (parts.length < 2) {
+            return "INVALID! Pls specify task number :)";
+        }
+        try {
+            int taskIndex = Integer.parseInt(parts[1]) - 1;
+            tasks.get(taskIndex).markDone();
+            return "Nice! I've marked this task as done:\n  " + tasks.get(taskIndex);
+        } catch (NumberFormatException e) {
+            return "OOP! smt went wrong:\nTask number must be a valid number :)";
+        } catch (IndexOutOfBoundsException e) {
+            return "INVALID! pls choose a task between 1 and " + tasks.size() + " (•⌓•).";
+        }
+    }
+
+    /**
+     * Marks a specified task as not done and returns a response message.
+     *
+     * @param input The user input containing the task number.
+     * @return A response message confirming the task is unmarked or an error message.
+     */
+    public String unmarkTaskWithResponse(String input) {
+        String[] parts = input.split(" ");
+        if (parts.length < 2) {
+            return "INVALID! Pls specify task number :)";
+        }
+
+        try {
+            int taskIndex = Integer.parseInt(parts[1]) - 1;
+            tasks.get(taskIndex).markUndone();
+            return "Ok, I've marked this task as not done yet:\n  " + tasks.get(taskIndex);
+        } catch (NumberFormatException e) {
+            return "OOP! smt went wrong:\nTask number must be a valid number :)";
+        } catch (IndexOutOfBoundsException e) {
+            return "INVALID! pls choose a task between 1 and " + tasks.size() + " (•⌓•).";
+        }
+    }
+
+    /**
+     * Adds a new task to the list and returns a response message.
+     *
+     * @param newTask The task to be added.
+     * @return A response message confirming task addition.
+     */
+    public String addTaskWithResponse(Task newTask) {
+        tasks.add(newTask);
+        return "Oki. I've added this task:\n  " + newTask + "\nNow you have " + tasks.size()
+                + " tasks in the list (˃ᴗ˂).";
+    }
+
+    /**
+     * Deletes a specified task from the list and returns a response message.
+     *
+     * @param input The user input containing the task number.
+     * @return A response message confirming task deletion or an error message.
+     */
+    public String deleteTaskWithResponse(String input) {
+        String[] parts = input.split(" ");
+        if (parts.length < 2) {
+            return "INVALID! Pls specify task number :)";
+        }
+
+        try {
+            int taskIndex = Integer.parseInt(parts[1]) - 1;
+            Task rem = tasks.remove(taskIndex);
+            return "Noted. I've removed this task:\n  " + rem + "\nNow you have " + tasks.size()
+                    + " tasks in the list ٩>ᴗ<)و.";
+        } catch (NumberFormatException e) {
+            return "OOP! smt went wrong:\nTask number must be a valid number :)";
+        } catch (IndexOutOfBoundsException e) {
+            return "INVALID! pls choose a task between 1 and " + tasks.size() + " (•⌓•).";
+        }
+    }
+
+    /**
+     * Finds tasks that contain the given keyword in their description.
+     *
+     * @param keyword The keyword to search for.
+     * @return A response message listing matching tasks or indicating no matches found.
+     */
+    public String findTaskWithResponse(String keyword) {
+        ArrayList<Task> matchingTasks = new ArrayList<>();
+
+        for (Task task : tasks) {
+            if (task.getDescription().toLowerCase().contains(keyword.toLowerCase())) {
+                matchingTasks.add(task);
+            }
+        }
+
+        if (matchingTasks.isEmpty()) {
+            return "No matching tasks found ;-;";
+        } else {
+            String res = "Here are the matching tasks in your list:\n";
+            for (int i = 0; i < matchingTasks.size(); i++) {
+                res += (i + 1) + "." + matchingTasks.get(i);
+            }
+            return res;
+        }
+    }
 }

@@ -44,6 +44,15 @@ public class Woogie {
         }
     }
 
+    public String getResponse(String input) {
+        if (input.equalsIgnoreCase("bye")) {
+            storage.saveTasks(tasks.getTasks());
+            return ui.getGoodbye();
+        }
+
+        return Parser.processCommandWithResponse(input, tasks, ui);
+    }
+
     /**
      * Starts the Woogie chatbot.
      *

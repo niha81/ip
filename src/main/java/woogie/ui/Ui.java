@@ -7,10 +7,10 @@ import java.util.Scanner;
  * Manages user prompts, messages, and errors.
  */
 public class Ui {
-    /** Scanner object for reading user input. */
-    private Scanner scanner;
     /** Constant line separator for formatting messages. */
     private static final String LINE = "\n---------------------------------------------------------------\n";
+    /** Scanner object for reading user input. */
+    private Scanner scanner;
 
     /**
      * Initializes the user interface.
@@ -27,11 +27,19 @@ public class Ui {
         System.out.println(LINE + "* Greetings! I'm Woogie *･ﾟ✧\n" + "How can I help you?" + LINE);
     }
 
+    public String getGreeting() {
+        return "* Greetings! I'm Woogie *･ﾟ✧\n" + "How can I help you?";
+    }
+
     /**
      * Displays the chatbot's farewell message.
      */
     public void showGoodbye() {
         System.out.println(LINE + "It pains me to have to part ways ૮(ㅠ-ㅠ).\nHope to see you again soon!" + LINE);
+    }
+
+    public String getGoodbye() {
+        return "It pains me to have to part ways ૮(ㅠ-ㅠ).\nHope to see you again soon!";
     }
 
     /**
