@@ -50,6 +50,15 @@ public class Parser {
         if (command.equals("find")) {
             return processFindCommand(input, tasks);
         }
+        if (command.equals("sort_todos")) {
+            return sortTodosWithResponse(tasks);
+        }
+        if (command.equals("sort_deadlines")) {
+            return sortDeadlinesWithResponse(tasks);
+        }
+        if (command.equals("sort_events")) {
+            return sortEventsWithResponse(tasks);
+        }
 
         Map<String, Function<String, String>> commands = initializeCommands(tasks, ui);
         return commands.getOrDefault(command, (cmd) -> "sorry idk this command ;-;").apply(input);
@@ -202,17 +211,21 @@ public class Parser {
         return tasks.addTaskWithResponse(newTask);
     }
 
-    /**
-     * Extracts the task description from user input.
-     *
-     * @param input The user input containing the task.
-     * @param offset The index offset where the description starts.
-     * @return The extracted description or an empty string if invalid.
-     */
-    private static String extractDescription(String input, int offset) {
-        if (input.length() > offset) {
-            input.substring(offset).trim();
-        }
-        return "";
+    private static String sortTodosWithResponse(TaskList tasks) {
+        TaskList sortedTodos = tasks.getAlphabeticalTodos();
+        return ui.returnMessage("Here are the todos sorted alphabetically:\n"
+                + sortedTodos.getTaskListAsString() + "You have some work to do (≧ᗜ≦)!!");
+    }
+
+    private static String sortDeadlinesWithResponse(TaskList tasks) {
+        TaskList sortedDeadlines = tasks.getChronologicalDeadlines();
+        return ui.returnMessage("Here are the deadlines sorted chronologically:\n"
+                + sortedDeadlines.getTaskListAsString() + "Lets get to work (๑•̀ ᴗ•́)૭✧");
+    }
+
+    private static String sortEventsWithResponse(TaskList tasks) {
+        TaskList sortedEvents = tasks.getChronologicalEvents();
+        return ui.returnMessage("Here are the events sorted by start date:\n"
+                + sortedEvents.getTaskListAsString() + "Hope you get them done ⚝");
     }
 }

@@ -26,6 +26,10 @@ public class Event extends Task {
         this.to = LocalDateTime.parse(to, INPUT_FORMATTER);
     }
 
+    public LocalDateTime getFromDate() {
+        return this.from;
+    }
+
     /**
      * Converts the Event task into a formatted string for file storage.
      *

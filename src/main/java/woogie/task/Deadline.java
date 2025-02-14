@@ -23,6 +23,10 @@ public class Deadline extends Task {
         this.by = LocalDateTime.parse(by, INPUT_FORMATTER);
     }
 
+    public LocalDateTime getByDate() {
+        return this.by;
+    }
+
     /**
      * Converts the Deadline task into a formatted string for file storage.
      *

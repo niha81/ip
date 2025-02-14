@@ -1,7 +1,12 @@
 package woogie.list;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
+import woogie.task.Deadline;
+import woogie.task.Event;
 import woogie.task.Task;
+import woogie.task.ToDo;
 import woogie.ui.Ui;
 
 /**
@@ -182,5 +187,29 @@ public class TaskList {
             }
         }
         return matchingTasks;
+    }
+
+    public TaskList getAlphabeticalTodos() {
+        List<Task> sortedTasks = tasks.stream()
+                .filter(task -> task instanceof ToDo)
+                .sorted(Comparator.comparing(task -> task.getDescription().toLowerCase()))
+                .toList();
+        return new TaskList(new ArrayList<>(sortedTasks));
+    }
+
+    public TaskList getChronologicalDeadlines() {
+        List<Task> sortedTasks = tasks.stream()
+                .filter(task -> task instanceof Deadline)
+                .sorted(Comparator.comparing(task -> ((Deadline) task).getByDate()))
+                .toList();
+        return new TaskList(new ArrayList<>(sortedTasks));
+    }
+
+    public TaskList getChronologicalEvents() {
+        List<Task> sortedTasks = tasks.stream()
+                .filter(task -> task instanceof Event)
+                .sorted(Comparator.comparing(task -> ((Event) task).getFromDate()))
+                .toList();
+        return new TaskList(new ArrayList<>(sortedTasks));
     }
 }
