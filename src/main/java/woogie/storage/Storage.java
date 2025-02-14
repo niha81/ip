@@ -29,7 +29,7 @@ public class Storage {
      *
      * @param tasks The list of tasks to be saved.
      */
-    public void saveTasks(ArrayList<Task> tasks) {
+    public String saveTasks(ArrayList<Task> tasks) {
         try {
             File file = new File(filePath);
             file.getParentFile().mkdirs();
@@ -39,8 +39,10 @@ public class Storage {
                 writer.write(task.toFileFormat() + "\n");
             }
             writer.close();
+
+            return "Tasks saved successfully •ᴗ•!";
         } catch (IOException e) {
-            System.out.println("Error saving tasks: " + e.getMessage());
+            return "Error saving tasks: " + e.getMessage();
         }
     }
 
@@ -68,7 +70,7 @@ public class Storage {
                 }
             }
         } catch (IOException e) {
-            System.out.println("Error loading tasks: " + e.getMessage());
+            System.err.println("Error loading tasks: " + e.getMessage());
         }
 
         return tasks;

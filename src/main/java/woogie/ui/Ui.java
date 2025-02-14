@@ -7,8 +7,6 @@ import java.util.Scanner;
  * Manages user prompts, messages, and errors.
  */
 public class Ui {
-    /** Constant line separator for formatting messages. */
-    private static final String LINE = "\n---------------------------------------------------------------\n";
     /** Scanner object for reading user input. */
     private Scanner scanner;
 
@@ -21,41 +19,17 @@ public class Ui {
     }
 
     /**
-     * Displays the chatbot's greeting message.
+     * Returns the chatbot's greeting message.
      */
-    public void showGreeting() {
-        System.out.println(LINE + "* Greetings! I'm Woogie *･ﾟ✧\n" + "How can I help you?" + LINE);
-    }
-
     public String getGreeting() {
-        return "* Greetings! I'm Woogie *･ﾟ✧\n" + "How can I help you?";
+        return "* Greetings! I'm Woogie *･ﾟ✧\n" + " How can I help you?";
     }
 
     /**
-     * Displays the chatbot's farewell message.
+     * Returns the chatbot's farewell message.
      */
-    public void showGoodbye() {
-        System.out.println(LINE + "It pains me to have to part ways ૮(ㅠ-ㅠ).\nHope to see you again soon!" + LINE);
-    }
-
     public String getGoodbye() {
         return "It pains me to have to part ways ૮(ㅠ-ㅠ).\nHope to see you again soon!";
-    }
-
-    /**
-     * Prints a horizontal line separator.
-     */
-    public void showLine() {
-        System.out.println(LINE);
-    }
-
-    /**
-     * Reads and returns the user's input command.
-     *
-     * @return The user's input as a string.
-     */
-    public String readCommand() {
-        return scanner.nextLine();
     }
 
     /**
@@ -63,8 +37,8 @@ public class Ui {
      *
      * @param message The message to be displayed.
      */
-    public void showMessage(String message) {
-        System.out.println(LINE + message + LINE);
+    public String returnMessage(String message) {
+        return message;
     }
 
     /**
@@ -72,7 +46,7 @@ public class Ui {
      *
      * @param message The error message to be displayed.
      */
-    public void showError(String message) {
-        System.out.println(LINE + "OOP! smt went wrong:\n" + message + LINE);
+    public String returnError(String message) {
+        return "Booooo!!\n" + message;
     }
 }

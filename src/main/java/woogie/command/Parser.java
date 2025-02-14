@@ -1,6 +1,10 @@
 package woogie.command;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
 
 import woogie.list.TaskList;
+import woogie.storage.Storage;
 import woogie.task.Deadline;
 import woogie.task.Event;
 import woogie.task.Task;
@@ -12,130 +16,16 @@ import woogie.ui.Ui;
  * Determines the appropriate actions to take based on user input.
  */
 public class Parser {
-    /**
-     * Processes user input and executes the corresponding command.
-     *
-     * @param input User input command.
-     * @param tasks TaskList containing the tasks.
-     * @param ui    User interface for displaying messages.
-     */
-    public static void processCommand(String input, TaskList tasks, Ui ui) {
-        if (input.equalsIgnoreCase("list")) {
-            tasks.listTasks();
-        } else if (input.startsWith("mark")) {
-            tasks.markTask(input);
-        } else if (input.startsWith("unmark")) {
-            tasks.unmarkTask(input);
-        } else if (input.startsWith("todo")) {
-            addTodo(tasks, input, ui);
-        } else if (input.startsWith("deadline")) {
-            addDeadline(tasks, input, ui);
-        } else if (input.startsWith("event")) {
-            addEvent(tasks, input, ui);
-        } else if (input.startsWith("delete")) {
-            tasks.deleteTask(input);
-        } else if (input.startsWith("find")) {
-            String keyword = input.substring(5).trim();
-            if (keyword.isEmpty()) {
-                ui.showMessage("Please enter a keyword to search for.");
-            } else {
-                tasks.findTask(keyword);
-            }
-        } else {
-            ui.showMessage("sorry idk this command ;-;");
-        }
-    }
+    private static final String DATE_FORMAT = "\\d{4}-\\d{2}-\\d{2} \\d{4}";
+    private static Ui ui;
 
     /**
-     * Adds a ToDo task to the TaskList.
+     * Sets the global UI instance for use in all methods.
      *
-     * @param tasks TaskList where the task will be added.
-     * @param input User input command for adding a ToDo.
-     * @param ui    User interface for displaying messages.
+     * @param uiInstance The Ui instance to set.
      */
-    private static void addTodo(TaskList tasks, String input, Ui ui) {
-        if (input.length() <= 5 || input.substring(5).trim().isEmpty()) {
-            ui.showMessage("todo's description cannot be empty, pls add one (•¬•)");
-            return;
-        }
-        String description = input.substring(5).trim();
-        Task newTask = new ToDo(description);
-        tasks.addTask(newTask);
-    }
-
-    /**
-     * Adds a Deadline task to the TaskList.
-     *
-     * @param tasks TaskList where the task will be added.
-     * @param input User input command for adding a Deadline.
-     * @param ui    User interface for displaying messages.
-     */
-    private static void addDeadline(TaskList tasks, String input, Ui ui) {
-        if (!input.contains(" /by ")) {
-            ui.showMessage("you can't have a deadline without a deadline, add a /by (•︿•)");
-            return;
-        }
-
-        try {
-            String[] parts = input.split(" /by ", 2);
-            if (parts[0].length() <= 9 || parts[0].substring(9).trim().isEmpty()) {
-                throw new IllegalArgumentException("deadline's description cannot be empty, pls add one (•¬•)");
-            }
-            if (!parts[1].matches("\\d{4}-\\d{2}-\\d{2} \\d{4}")) { // Ensure correct format
-                throw new IllegalArgumentException("deadline must be in yyyy-MM-dd HHmm format!");
-            }
-
-            String description = parts[0].substring(9);
-            String by = parts[1];
-            Task newTask = new Deadline(description, by);
-            tasks.addTask(newTask);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            ui.showMessage("oop, smt went wrong with your deadline input (°△°)!!");
-        } catch (IllegalArgumentException e) {
-            ui.showError(e.getMessage());
-        }
-    }
-
-    /**
-     * Adds an Event task to the TaskList.
-     *
-     * @param tasks TaskList where the task will be added.
-     * @param input User input command for adding an Event.
-     * @param ui    User interface for displaying messages.
-     */
-    private static void addEvent(TaskList tasks, String input, Ui ui) {
-        if (!input.contains(" /from ") || !input.contains(" /to ")) {
-            ui.showMessage("i need to know when your event starts and ends,\n" + "pls add both a /from and /to (•︿•)");
-            return;
-        }
-
-        try {
-            String[] firstSplit = input.split(" /from ", 2);
-            if (firstSplit.length < 2 || firstSplit[0].substring(6).trim().isEmpty()) {
-                throw new IllegalArgumentException("event's description cannot be empty, pls add one (•¬•)");
-            }
-
-            String description = firstSplit[0].substring(6).trim();
-            String[] secondSplit = firstSplit[1].split(" /to ", 2);
-            if (secondSplit.length < 2 || secondSplit[0].trim().isEmpty() || secondSplit[1].trim().isEmpty()) {
-                throw new IllegalArgumentException("i need to know when your event starts and ends,\n"
-                        + " pls add both a /from and /to (•︿•)");
-            }
-
-            String from = secondSplit[0].trim();
-            String to = secondSplit[1].trim();
-
-            if (!from.matches("\\d{4}-\\d{2}-\\d{2} \\d{4}") || !to.matches("\\d{4}-\\d{2}-\\d{2} \\d{4}")) {
-                throw new IllegalArgumentException("event times must be in yyyy-MM-dd HHmm format!");
-            }
-
-            Task newTask = new Event(description, from, to);
-            tasks.addTask(newTask);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            ui.showMessage("oop, smt went wrong with your event input (°△°)!!");
-        } catch (IllegalArgumentException e) {
-            ui.showError(e.getMessage());
-        }
+    private static void setUi(Ui uiInstance) {
+        ui = uiInstance;
     }
 
     /**
@@ -144,36 +34,71 @@ public class Parser {
      *
      * @param input User input command.
      * @param tasks TaskList containing the tasks.
-     * @param ui    User interface for displaying messages.
+     * @param uiInstance User interface for displaying messages.
      * @return A response string based on the command execution.
      */
-    public static String processCommandWithResponse(String input, TaskList tasks, Ui ui) {
-        if (input.equalsIgnoreCase("bye")) {
-            return ui.getGoodbye();
-        } else if (input.equalsIgnoreCase("list")) {
-            return tasks.getTaskListAsString();
-        } else if (input.startsWith("mark")) {
-            return tasks.markTaskWithResponse(input);
-        } else if (input.startsWith("unmark")) {
-            return tasks.unmarkTaskWithResponse(input);
-        } else if (input.startsWith("todo")) {
-            return addTodoWithResponse(tasks, input);
-        } else if (input.startsWith("deadline")) {
-            return addDeadlineWithResponse(tasks, input);
-        } else if (input.startsWith("event")) {
-            return addEventWithResponse(tasks, input);
-        } else if (input.startsWith("delete")) {
-            return tasks.deleteTaskWithResponse(input);
-        } else if (input.startsWith("find")) {
-            String keyword = input.substring(5).trim();
-            if (keyword.isEmpty()) {
-                return "Please enter a keyword to search for (•¬•)";
-            } else {
-                return tasks.findTaskWithResponse(keyword);
-            }
-        } else {
-            return "sorry idk this command ;-;";
+    public static String processCommandWithResponse(String input, TaskList tasks, Ui uiInstance, Storage storage) {
+        setUi(uiInstance);
+        String command = input.split(" ")[0].toLowerCase();
+
+        if (command.equals("bye")) {
+            return storage.saveTasks(tasks.getTasks()) + "\n" + ui.getGoodbye();
         }
+        if (command.equals("list")) {
+            return tasks.getTaskListAsString();
+        }
+        if (command.equals("find")) {
+            return processFindCommand(input, tasks);
+        }
+
+        Map<String, Function<String, String>> commands = initializeCommands(tasks, ui);
+        return commands.getOrDefault(command, (cmd) -> "sorry idk this command ;-;").apply(input);
+    }
+
+    /**
+     * Initializes the command map with corresponding task functions.
+     *
+     * @param tasks TaskList containing tasks.
+     * @return A map of command strings to processing functions.
+     */
+    private static Map<String, Function<String, String>> initializeCommands(TaskList tasks, Ui ui) {
+        Map<String, Function<String, String>> commands = new HashMap<>();
+        commands.put("mark", tasks::markTaskWithResponse);
+        commands.put("unmark", tasks::unmarkTaskWithResponse);
+        commands.put("todo", (cmd) -> addTodoWithResponse(tasks, cmd));
+        commands.put("deadline", (cmd) -> addDeadlineWithResponse(tasks, cmd));
+        commands.put("event", (cmd) -> addEventWithResponse(tasks, cmd));
+        commands.put("delete", tasks::deleteTaskWithResponse);
+        return commands;
+    }
+
+    /**
+     * Processes the 'find' command.
+     *
+     * @param input The user input command.
+     * @param tasks TaskList where tasks are stored.
+     * @return A response message listing matching tasks or indicating no matches found.
+     */
+    private static String processFindCommand(String input, TaskList tasks) {
+        String keyword = extractFindKeyword(input);
+        if (keyword.isEmpty()) {
+            return ui.returnError("Please enter a keyword to search for (•¬•)");
+        }
+        return tasks.findTaskWithResponse(keyword);
+    }
+
+    /**
+     * Extracts the keyword or task description from user input.
+     *
+     * @param input The user input command.
+     * @return The extracted description or keyword.
+     */
+    private static String extractFindKeyword(String input) {
+        String command = "find";
+        if (input.length() > command.length()) {
+            return input.substring(command.length()).trim();
+        }
+        return "";
     }
 
     /**
@@ -184,12 +109,26 @@ public class Parser {
      * @return Response message confirming task addition or an error message.
      */
     private static String addTodoWithResponse(TaskList tasks, String input) {
-        if (input.length() <= 5 || input.substring(5).trim().isEmpty()) {
-            return "todo's description cannot be empty, pls add one (•¬•)";
+        String description = extractTaskDescription(input, "todo");
+        if (description.isEmpty()) {
+            return ui.returnError("todo's description cannot be empty, pls add one (•¬•)");
         }
-        String description = input.substring(5).trim();
         Task newTask = new ToDo(description);
         return tasks.addTaskWithResponse(newTask);
+    }
+
+    /**
+     * Extracts the task description from user input.
+     *
+     * @param input   The user input command.
+     * @param command The command keyword (e.g., "todo").
+     * @return The extracted description.
+     */
+    private static String extractTaskDescription(String input, String command) {
+        if (input.length() > command.length()) {
+            return input.substring(command.length()).trim();
+        }
+        return "";
     }
 
     /**
@@ -200,28 +139,27 @@ public class Parser {
      * @return Response message confirming task addition or an error message.
      */
     private static String addDeadlineWithResponse(TaskList tasks, String input) {
-        if (!input.contains(" /by ")) {
-            return "you can't have a deadline without a deadline, add a /by (•︿•)";
+        if (!input.contains("/by")) {
+            return ui.returnError("you can't have a deadline without a deadline, add a /by date (•︿•)");
         }
 
-        try {
-            String[] parts = input.split(" /by ", 2);
-            if (parts[0].length() <= 9 || parts[0].substring(9).trim().isEmpty()) {
-                throw new IllegalArgumentException("deadline's description cannot be empty, pls add one (•¬•)");
-            }
-            if (!parts[1].matches("\\d{4}-\\d{2}-\\d{2} \\d{4}")) { // Ensure correct format
-                throw new IllegalArgumentException("deadline must be in yyyy-MM-dd HHmm format!");
-            }
-
-            String description = parts[0].substring(9);
-            String by = parts[1];
-            Task newTask = new Deadline(description, by);
-            return tasks.addTaskWithResponse(newTask);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            return "oop, smt went wrong with your deadline input (°△°)!!";
-        } catch (IllegalArgumentException e) {
-            return "OOP! smt went wrong:\n" + e.getMessage();
+        String[] parts = input.split(" /by ", 2);
+        if (parts.length < 2 || parts[1].trim().isEmpty()) {
+            return ui.returnError("deadline's description or date cannot be empty, pls add one (°△°)!!");
         }
+
+        String description = parts[0].replaceFirst("^deadline\\s*", "").trim();
+        if (description.isEmpty()) {
+            return ui.returnError("deadline's description cannot be empty, pls add one (°△°)!!");
+        }
+
+        String deadline = parts[1].trim();
+        if (!deadline.matches(DATE_FORMAT)) {
+            return ui.returnError("deadline must be in yyyy-MM-dd HHmm format (•¬•)!");
+        }
+
+        Task newTask = new Deadline(description, deadline);
+        return tasks.addTaskWithResponse(newTask);
     }
 
     /**
@@ -233,35 +171,48 @@ public class Parser {
      */
     private static String addEventWithResponse(TaskList tasks, String input) {
         if (!input.contains(" /from ") || !input.contains(" /to ")) {
-            return "i need to know when your event starts and ends,\n" + "pls add both a /from and /to (•︿•)";
+            return ui.returnError("i need to know when your event starts and ends,\n"
+                    + "pls add both a /from and /to (•︿•)");
         }
 
-        try {
-            String[] firstSplit = input.split(" /from ", 2);
-            if (firstSplit.length < 2 || firstSplit[0].substring(6).trim().isEmpty()) {
-                throw new IllegalArgumentException("event's description cannot be empty, pls add one (•¬•)");
-            }
-
-            String description = firstSplit[0].substring(6).trim();
-            String[] secondSplit = firstSplit[1].split(" /to ", 2);
-            if (secondSplit.length < 2 || secondSplit[0].trim().isEmpty() || secondSplit[1].trim().isEmpty()) {
-                throw new IllegalArgumentException("i need to know when your event starts and ends,\n"
-                        + " pls add both a /from and /to (•︿•)");
-            }
-
-            String from = secondSplit[0].trim();
-            String to = secondSplit[1].trim();
-
-            if (!from.matches("\\d{4}-\\d{2}-\\d{2} \\d{4}") || !to.matches("\\d{4}-\\d{2}-\\d{2} \\d{4}")) {
-                throw new IllegalArgumentException("event times must be in yyyy-MM-dd HHmm format!");
-            }
-
-            Task newTask = new Event(description, from, to);
-            return tasks.addTaskWithResponse(newTask);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            return "oop, smt went wrong with your event input (°△°)!!";
-        } catch (IllegalArgumentException e) {
-            return "OOP! smt went wrong:\n" + e.getMessage();
+        String[] firstSplit = input.split(" /from ", 2);
+        if (firstSplit.length < 2 || firstSplit[1].trim().isEmpty()) {
+            return ui.returnError("event's description or start time cannot be empty, pls add one (°△°)!!");
         }
+
+        String description = firstSplit[0].replaceFirst("^event\\s*", "").trim();
+        if (description.isEmpty()) {
+            return ui.returnError("event's description cannot be empty, pls add one (•¬•)");
+        }
+
+        String[] secondSplit = firstSplit[1].split(" /to ", 2);
+        if (secondSplit.length < 2 || secondSplit[1].trim().isEmpty()) {
+            return ui.returnError("i need to know when your event starts and ends,\n"
+                    + "pls add both a /from and /to (•︿•)");
+        }
+
+        String from = secondSplit[0].trim();
+        String to = secondSplit[1].trim();
+
+        if (!from.matches(DATE_FORMAT) || !to.matches(DATE_FORMAT)) {
+            return ui.returnError("event times must be in yyyy-MM-dd HHmm format (•¬•)!");
+        }
+
+        Task newTask = new Event(description, from, to);
+        return tasks.addTaskWithResponse(newTask);
+    }
+
+    /**
+     * Extracts the task description from user input.
+     *
+     * @param input The user input containing the task.
+     * @param offset The index offset where the description starts.
+     * @return The extracted description or an empty string if invalid.
+     */
+    private static String extractDescription(String input, int offset) {
+        if (input.length() > offset) {
+            input.substring(offset).trim();
+        }
+        return "";
     }
 }
