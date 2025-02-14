@@ -9,11 +9,12 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import woogie.task.Deadline;
+import woogie.task.Event;
 import woogie.task.Task;
 import woogie.task.ToDo;
 
 public class TaskListTest {
-
     private TaskList taskList;
 
     @BeforeEach
@@ -22,48 +23,48 @@ public class TaskListTest {
     }
 
     @Test
-    public void testAddTask() {
-        Task task = new ToDo("Finish homework");
-        taskList.addTask(task);
-        assertEquals(1, taskList.getTasks().size(), "Task should be added successfully.");
+    public void addTask_correctlyAddsTask() {
+        Task todo = new ToDo("Read book");
+        taskList.addTaskWithResponse(todo);
+        assertEquals(1, taskList.getTasks().size());
+        assertEquals(todo, taskList.getTasks().get(0));
     }
 
     @Test
-    public void testDeleteTaskValid() {
-        Task task1 = new ToDo("Read book");
-        Task task2 = new ToDo("Write notes");
-        taskList.addTask(task1);
-        taskList.addTask(task2);
+    public void deleteTask_removesTask() {
+        Task event = new Event("Meeting", "2025-04-10 1500", "2025-04-10 1600");
+        taskList.addTaskWithResponse(event);
+        taskList.deleteTaskWithResponse("delete 1");
 
-        taskList.deleteTask("delete 1");
-        assertEquals(1, taskList.getTasks().size(), "Task should be deleted successfully.");
+        assertEquals(0, taskList.getTasks().size());
     }
 
     @Test
-    public void testDeleteTaskInvalidIndex() {
-        Task task = new ToDo("Buy groceries");
-        taskList.addTask(task);
+    public void markTask_correctlyMarksTask() {
+        Task deadline = new Deadline("Submit proposal", "2025-05-01 1200");
+        taskList.addTaskWithResponse(deadline);
+        taskList.markTaskWithResponse("mark 1");
 
-        taskList.deleteTask("delete 10"); // Invalid index
-        assertEquals(1, taskList.getTasks().size(), "List should remain unchanged if delete index is out of range.");
+        assertTrue(taskList.getTasks().get(0).getStatus());
     }
 
     @Test
-    public void testMarkTask() {
-        Task task = new ToDo("Clean room");
-        taskList.addTask(task);
+    public void unmarkTask_correctlyUnmarksTask() {
+        Task deadline = new Deadline("Submit project", "2025-06-01 1200");
+        taskList.addTaskWithResponse(deadline);
+        taskList.markTaskWithResponse("mark 1");
+        taskList.unmarkTaskWithResponse("unmark 1");
 
-        taskList.markTask("mark 1");
-        assertTrue(taskList.getTasks().get(0).getStatus(), "Task should be marked as done.");
+        assertFalse(taskList.getTasks().get(0).getStatus());
     }
 
     @Test
-    public void testUnmarkTask() {
-        Task task = new ToDo("Watch movie");
-        taskList.addTask(task);
-        taskList.markTask("mark 1");
+    public void getTaskListAsString_correctFormat() {
+        taskList.addTaskWithResponse(new ToDo("Walk dog"));
+        taskList.addTaskWithResponse(new Deadline("Pay bills", "2025-07-01 1800"));
 
-        taskList.unmarkTask("unmark 1");
-        assertFalse(taskList.getTasks().get(0).getStatus(), "Task should be marked as not done.");
+        String expected = "1. [T][ ] Walk dog\n"
+                + "2. [D][ ] Pay bills (by: Jul 1 2025, 6:00 PM)\n";
+        assertEquals(expected, taskList.getTaskListAsString());
     }
 }

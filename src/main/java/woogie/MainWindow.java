@@ -6,6 +6,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import woogie.ui.Ui;
+
 /**
  * Controller for the main GUI.
  */
@@ -20,6 +22,7 @@ public class MainWindow extends AnchorPane {
     private Button sendButton;
 
     private Woogie woogie;
+    private Ui ui = new Ui();
 
     private Image userImage = new Image(this.getClass().getResourceAsStream("/images/samhani.jpg"));
     private Image woogieImage = new Image(this.getClass().getResourceAsStream("/images/woonagi.jpg"));
@@ -32,9 +35,8 @@ public class MainWindow extends AnchorPane {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
 
         // Display greeting message when GUI starts
-        String greeting = "* Greetings! I'm Woogie *･ﾟ✧\n" + " How can I help you?";
         dialogContainer.getChildren().add(
-                DialogBox.getWoogieDialog(greeting, woogieImage)
+                DialogBox.getWoogieDialog(ui.getGreeting(), woogieImage)
         );
     }
 

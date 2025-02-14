@@ -29,38 +29,14 @@ public class Woogie {
     }
 
     /**
-     * Runs the chatbot by processing user commands in a loop.
-     * Saves tasks after each command execution.
-     */
-    public void run() {
-        ui.showGreeting();
-        while (true) {
-            String input = ui.readCommand().trim();
-            if (input.equalsIgnoreCase("bye")) {
-                ui.showGoodbye();
-                storage.saveTasks(tasks.getTasks());
-                break;
-            }
-            Parser.processCommand(input, tasks, ui);
-            storage.saveTasks(tasks.getTasks());
-        }
-    }
-
-    public String getResponse(String input) {
-        if (input.equalsIgnoreCase("bye")) {
-            storage.saveTasks(tasks.getTasks());
-            return ui.getGoodbye();
-        }
-
-        return Parser.processCommandWithResponse(input, tasks, ui);
-    }
-
-    /**
-     * Starts the Woogie chatbot.
+     * Processes user input and generates a response.
+     * If the input is "bye", tasks are saved before returning the goodbye message.
+     * Otherwise, it delegates command processing to the Parser.
      *
-     * @param args Command-line arguments (not used).
+     * @param input The user's input command.
+     * @return The response message from Woogie.
      */
-    public static void main(String[] args) {
-        new Woogie().run();
+    public String getResponse(String input) {
+        return Parser.processCommandWithResponse(input, tasks, ui, storage);
     }
 }

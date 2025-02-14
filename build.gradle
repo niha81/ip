@@ -49,7 +49,6 @@ test {
 }
 
 application {
-//    mainClass.set("woogie.Woogie")
     mainClass.set("woogie.Launcher")
 }
 

@@ -9,6 +9,8 @@ import woogie.ui.Ui;
  * Handles adding, deleting, marking, unmarking, and listing tasks.
  */
 public class TaskList {
+    private static final int NO_TASK_NUMBER = -1;
+    private static final int INVALID_NUMBER_FORMAT = -2;
     private ArrayList<Task> tasks;
     private Ui ui;
 
@@ -23,141 +25,12 @@ public class TaskList {
     }
 
     /**
-     * Initializes an empty TaskList.
-     */
-    public TaskList() {
-        this.tasks = new ArrayList<>();
-        this.ui = new Ui();
-    }
-
-    /**
      * Retrieves the current list of tasks.
      *
      * @return The list of tasks.
      */
     public ArrayList<Task> getTasks() {
         return this.tasks;
-    }
-
-    /**
-     * Adds a task to the task list and notifies the user.
-     *
-     * @param newTask The task to be added.
-     */
-    public void addTask(Task newTask) {
-        tasks.add(newTask);
-        ui.showMessage("Oki. I've added this task:\n  " + newTask + "\nNow you have " + tasks.size()
-                + " tasks in the list (੭˃ᴗ˂)੭.");
-    }
-
-    /**
-     * Deletes a task from the list based on user input.
-     *
-     * @param input The user's delete command, expected format: "delete X" where X is task index.
-     */
-    public void deleteTask(String input) {
-        String[] parts = input.split(" ");
-        if (parts.length < 2) {
-            ui.showMessage("INVALID! Pls specify task number :)");
-            return;
-        }
-
-        try {
-            int taskIndex = Integer.parseInt(parts[1]) - 1;
-            Task rem = tasks.remove(taskIndex);
-            ui.showMessage("Noted. I've removed this task:\n  " + rem + "\nNow you have " + tasks.size()
-                    + " tasks in the list ٩>ᴗ<)و.");
-        } catch (NumberFormatException e) {
-            ui.showError("woogie.task.Task number must be a valid number :)");
-        } catch (IndexOutOfBoundsException e) {
-            ui.showMessage("INVALID! pls choose a task between 1 and " + tasks.size() + "  (•⌓•).");
-        }
-    }
-
-    /**
-     * Marks a task as done based on user input.
-     *
-     * @param input The user's mark command, expected format: "mark X" where X is task index.
-     */
-    public void markTask(String input) {
-        String[] parts = input.split(" ");
-        if (parts.length < 2) {
-            ui.showMessage("INVALID! Pls specify task number :)");
-            return;
-        }
-        try {
-            int taskIndex = Integer.parseInt(parts[1]) - 1;
-            tasks.get(taskIndex).markDone();
-            ui.showMessage("Nice! I've marked this task as done:\n  " + tasks.get(taskIndex));
-        } catch (NumberFormatException e) {
-            ui.showError("Task number must be a valid number :)");
-        } catch (IndexOutOfBoundsException e) {
-            ui.showMessage("INVALID! pls choose a task between 1 and " + tasks.size() + " (•⌓•).");
-        }
-    }
-
-    /**
-     * Marks a task as not done based on user input.
-     *
-     * @param input The user's unmark command, expected format: "unmark X" where X is task index.
-     */
-    public void unmarkTask(String input) {
-        String[] parts = input.split(" ");
-        if (parts.length < 2) {
-            ui.showMessage("INVALID! Pls specify task number :)");
-            return;
-        }
-
-        try {
-            int taskIndex = Integer.parseInt(parts[1]) - 1;
-            tasks.get(taskIndex).markUndone();
-            ui.showMessage("Ok, I've marked this task as not done yet:\n  " + tasks.get(taskIndex));
-        } catch (NumberFormatException e) {
-            ui.showError("Task number must be a valid number :)");
-        } catch (IndexOutOfBoundsException e) {
-            ui.showMessage("INVALID! pls choose a task between 1 and " + tasks.size() + " (•⌓•).");
-        }
-    }
-
-    /**
-     * Lists all tasks currently in the task list.
-     * Displays a message if the task list is empty.
-     */
-    public void listTasks() {
-        if (tasks.isEmpty()) {
-            ui.showMessage("nothing here yet TT");
-        } else {
-            ui.showLine();
-            for (int i = 0; i < tasks.size(); i++) {
-                System.out.println((i + 1) + "." + tasks.get(i));
-            }
-            ui.showLine();
-        }
-    }
-
-    /**
-     * Finds tasks that contain the specified keyword in their descriptions.
-     *
-     * @param keyword The keyword to search for in task descriptions.
-     */
-    public void findTask(String keyword) {
-        ArrayList<Task> matchingTasks = new ArrayList<>();
-
-        for (Task task : tasks) {
-            if (task.getDescription().toLowerCase().contains(keyword.toLowerCase())) {
-                matchingTasks.add(task);
-            }
-        }
-
-        if (matchingTasks.isEmpty()) {
-            ui.showMessage("No matching tasks found ;-;");
-        } else {
-            ui.showMessage("Here are the matching tasks in your list:");
-            for (int i = 0; i < matchingTasks.size(); i++) {
-                System.out.println((i + 1) + "." + matchingTasks.get(i));
-            }
-            ui.showLine();
-        }
     }
 
     /**
@@ -177,25 +50,44 @@ public class TaskList {
     }
 
     /**
+     * Extracts the task index from user input.
+     *
+     * @param input The user's command.
+     * @return The task index (0-based) or special error values.
+     */
+
+    private int extractTaskIndexFromInput(String input) {
+        String[] parts = input.split(" ");
+        if (parts.length < 2) {
+            return NO_TASK_NUMBER;
+        }
+
+        try {
+            return Integer.parseInt(parts[1]) - 1;
+        } catch (NumberFormatException e) {
+            return INVALID_NUMBER_FORMAT;
+        }
+    }
+
+    /**
      * Marks a specified task as done and returns a response message.
      *
      * @param input The user input containing the task number.
      * @return A response message confirming the task is marked done or an error message.
      */
     public String markTaskWithResponse(String input) {
-        String[] parts = input.split(" ");
-        if (parts.length < 2) {
-            return "INVALID! Pls specify task number :)";
+        int taskIndex = extractTaskIndexFromInput(input);
+        if (taskIndex == NO_TASK_NUMBER) {
+            return ui.returnError("INVALID! Pls specify task number :)");
         }
-        try {
-            int taskIndex = Integer.parseInt(parts[1]) - 1;
-            tasks.get(taskIndex).markDone();
-            return "Nice! I've marked this task as done:\n  " + tasks.get(taskIndex);
-        } catch (NumberFormatException e) {
-            return "OOP! smt went wrong:\nTask number must be a valid number :)";
-        } catch (IndexOutOfBoundsException e) {
-            return "INVALID! pls choose a task between 1 and " + tasks.size() + " (•⌓•).";
+        if (taskIndex == INVALID_NUMBER_FORMAT) {
+            return ui.returnError("Task number must be a valid number :)");
         }
+        if (taskIndex < 0 || taskIndex >= tasks.size()) {
+            return ui.returnError("INVALID! pls choose a task between 1 and " + tasks.size() + " (•⌓•).");
+        }
+        tasks.get(taskIndex).markDone();
+        return ui.returnMessage("Nice! I've marked this task as done:\n  " + tasks.get(taskIndex) + "\n⸜( ˃ ᵕ ˂ )⸝");
     }
 
     /**
@@ -205,20 +97,18 @@ public class TaskList {
      * @return A response message confirming the task is unmarked or an error message.
      */
     public String unmarkTaskWithResponse(String input) {
-        String[] parts = input.split(" ");
-        if (parts.length < 2) {
-            return "INVALID! Pls specify task number :)";
+        int taskIndex = extractTaskIndexFromInput(input);
+        if (taskIndex == NO_TASK_NUMBER) {
+            return ui.returnError("INVALID! Pls specify task number :)");
         }
-
-        try {
-            int taskIndex = Integer.parseInt(parts[1]) - 1;
-            tasks.get(taskIndex).markUndone();
-            return "Ok, I've marked this task as not done yet:\n  " + tasks.get(taskIndex);
-        } catch (NumberFormatException e) {
-            return "OOP! smt went wrong:\nTask number must be a valid number :)";
-        } catch (IndexOutOfBoundsException e) {
-            return "INVALID! pls choose a task between 1 and " + tasks.size() + " (•⌓•).";
+        if (taskIndex == INVALID_NUMBER_FORMAT) {
+            return ui.returnError("Task number must be a valid number :)");
         }
+        if (taskIndex < 0 || taskIndex >= tasks.size()) {
+            return ui.returnError("INVALID! pls choose a task between 1 and " + tasks.size() + " (•⌓•)");
+        }
+        tasks.get(taskIndex).markUndone();
+        return ui.returnMessage("Nice! I've marked this task as done:\n  " + tasks.get(taskIndex) + "\n⸜( ˃ ᵕ ˂ )⸝");
     }
 
     /**
@@ -232,7 +122,7 @@ public class TaskList {
 
         tasks.add(newTask);
         return "Oki. I've added this task:\n  " + newTask + "\nNow you have " + tasks.size()
-                + " tasks in the list (˃ᴗ˂).";
+                + " tasks in the list (˃ᴗ˂)♡";
     }
 
     /**
@@ -242,21 +132,20 @@ public class TaskList {
      * @return A response message confirming task deletion or an error message.
      */
     public String deleteTaskWithResponse(String input) {
-        String[] parts = input.split(" ");
-        if (parts.length < 2) {
-            return "INVALID! Pls specify task number :)";
+        int taskIndex = extractTaskIndexFromInput(input);
+        if (taskIndex == NO_TASK_NUMBER) {
+            return ui.returnError("INVALID! Pls specify task number :)");
+        }
+        if (taskIndex == INVALID_NUMBER_FORMAT) {
+            return ui.returnError("Task number must be a valid number :)");
+        }
+        if (taskIndex < 0 || taskIndex >= tasks.size()) {
+            return ui.returnError("INVALID! pls choose a task between 1 and " + tasks.size() + " (•⌓•)");
         }
 
-        try {
-            int taskIndex = Integer.parseInt(parts[1]) - 1;
-            Task rem = tasks.remove(taskIndex);
-            return "Noted. I've removed this task:\n  " + rem + "\nNow you have " + tasks.size()
-                    + " tasks in the list ٩>ᴗ<)و.";
-        } catch (NumberFormatException e) {
-            return "OOP! smt went wrong:\nTask number must be a valid number :)";
-        } catch (IndexOutOfBoundsException e) {
-            return "INVALID! pls choose a task between 1 and " + tasks.size() + " (•⌓•).";
-        }
+        Task rem = tasks.remove(taskIndex);
+        return "Noted. I've removed this task:\n  " + rem + "\nNow you have " + tasks.size()
+                + " tasks in the list ( ˃ ᵕ ˂ )♡";
     }
 
     /**
@@ -266,22 +155,32 @@ public class TaskList {
      * @return A response message listing matching tasks or indicating no matches found.
      */
     public String findTaskWithResponse(String keyword) {
-        ArrayList<Task> matchingTasks = new ArrayList<>();
 
+        ArrayList<Task> matchingTasks = findMatchingTasks(keyword);
+
+        if (matchingTasks.isEmpty()) {
+            return ui.returnError("No matching tasks found ;-;");
+        }
+        String res = "Here are the matching tasks in your list:\n";
+        for (int i = 0; i < matchingTasks.size(); i++) {
+            res += (i + 1) + "." + matchingTasks.get(i) + "\n";
+        }
+        return res;
+    }
+
+    /**
+     * Finds all tasks that contain the given keyword.
+     *
+     * @param keyword The keyword to search for.
+     * @return A list of matching tasks.
+     */
+    private ArrayList<Task> findMatchingTasks(String keyword) {
+        ArrayList<Task> matchingTasks = new ArrayList<>();
         for (Task task : tasks) {
             if (task.getDescription().toLowerCase().contains(keyword.toLowerCase())) {
                 matchingTasks.add(task);
             }
         }
-
-        if (matchingTasks.isEmpty()) {
-            return "No matching tasks found ;-;";
-        } else {
-            String res = "Here are the matching tasks in your list:\n";
-            for (int i = 0; i < matchingTasks.size(); i++) {
-                res += (i + 1) + "." + matchingTasks.get(i);
-            }
-            return res;
-        }
+        return matchingTasks;
     }
 }
