@@ -24,6 +24,8 @@ public class Woogie {
         ui = new Ui();
         storage = new Storage(FILE_PATH);
         tasks = new TaskList(storage.loadTasks());
+
+        assert tasks != null : "TaskList should not be null after loading tasks!";
     }
 
     /**

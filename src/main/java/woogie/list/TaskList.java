@@ -118,6 +118,8 @@ public class TaskList {
      * @return A response message confirming task addition.
      */
     public String addTaskWithResponse(Task newTask) {
+        assert newTask != null : "Task being added should not be null";
+
         tasks.add(newTask);
         return "Oki. I've added this task:\n  " + newTask + "\nNow you have " + tasks.size()
                 + " tasks in the list (˃ᴗ˂)♡";
