@@ -1,6 +1,11 @@
 package woogie.ui;
-
 import java.util.Scanner;
+
+import javafx.animation.PauseTransition;
+import javafx.application.Platform;
+import javafx.util.Duration;
+
+
 
 /**
  * Handles all user interactions, including input and output.
@@ -48,5 +53,14 @@ public class Ui {
      */
     public String returnError(String message) {
         return "Booooo!!\n" + message;
+    }
+
+    /**
+     * Exits the application smoothly by introducing a short delay before closing.
+     * */
+    public void smoothExit() {
+        PauseTransition delay = new PauseTransition(Duration.millis(750));
+        delay.setOnFinished(event -> Platform.exit());
+        delay.play();
     }
 }

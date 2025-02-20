@@ -1,0 +1,49 @@
+.root {
+    -fx-background-color: #F1F0EC;
+}
+
+#dialogContainer {
+    -fx-background-color: transparent;
+    -fx-padding: 10px;
+}
+
+#scrollPane {
+    -fx-background: transparent;
+    -fx-background-color: transparent;
+}
+
+/* --- Message Bubbles --- */
+.woogie-dialog {
+    -fx-background-radius: 15px;
+    -fx-padding: 10px;
+    -fx-border-radius: 15px;
+    -fx-text-fill: black;
+    -fx-font-size: 13px;
+    -fx-font-weight: normal;
+    -fx-background-color: #DFA69A;
+}
+
+.dialog-box {
+    -fx-alignment: center;
+}
+
+#userInput {
+    -fx-font-size: 14px;
+    -fx-padding: 10px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-border-color: #CCCCCC;
+    -fx-background-color: #D8B0A3;
+    -fx-text-fill: black;
+}
+
+#sendButton {
+    -fx-background-color: #788A5F;
+    -fx-text-fill: white;
+    -fx-border-radius: 10px;
+    -fx-font-weight: bold;
+}
+
+#sendButton:hover {
+    -fx-background-color: #5A7046;
+}

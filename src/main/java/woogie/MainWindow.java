@@ -33,7 +33,6 @@ public class MainWindow extends AnchorPane {
     @FXML
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
-
         // Display greeting message when GUI starts
         dialogContainer.getChildren().add(
                 DialogBox.getWoogieDialog(ui.getGreeting(), woogieImage)

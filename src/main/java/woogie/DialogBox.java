@@ -38,6 +38,12 @@ public class DialogBox extends HBox {
         dialog.setText(text);
         displayPicture.setImage(img);
 
+        // Reduce profile picture size
+        displayPicture.setFitWidth(75);
+        displayPicture.setFitHeight(75);
+
+        displayPicture.getStyleClass().add("profile-pic");
+
         displayPicture.setClip(new Circle(displayPicture.getFitWidth() / 2,
                 displayPicture.getFitHeight() / 2,
                 displayPicture.getFitWidth() / 2));
@@ -50,7 +56,8 @@ public class DialogBox extends HBox {
         dialog.setWrapText(true);
         dialog.setMaxWidth(250); // Set max width before wrapping
 
-
+        dialog.getStyleClass().add("woogie-dialog");
+        this.getStyleClass().add("dialog-container");
     }
 
     /**
@@ -64,12 +71,15 @@ public class DialogBox extends HBox {
     }
 
     public static DialogBox getUserDialog(String text, Image img) {
-        return new DialogBox(text, img);
+        var db = new DialogBox(text, img);
+        db.setAlignment(Pos.CENTER_RIGHT);
+        return db;
     }
 
     public static DialogBox getWoogieDialog(String text, Image img) {
         var db = new DialogBox(text, img);
         db.flip();
+        db.setAlignment(Pos.CENTER_LEFT);
         return db;
     }
 }

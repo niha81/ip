@@ -38,30 +38,38 @@ public class Parser {
      * @return A response string based on the command execution.
      */
     public static String processCommandWithResponse(String input, TaskList tasks, Ui uiInstance, Storage storage) {
-        setUi(uiInstance);
-        String command = input.split(" ")[0].toLowerCase();
+        try {
+            setUi(uiInstance);
+            String command = input.split(" ")[0].toLowerCase();
 
-        if (command.equals("bye")) {
-            return storage.saveTasks(tasks.getTasks()) + "\n" + ui.getGoodbye();
-        }
-        if (command.equals("list")) {
-            return tasks.getTaskListAsString();
-        }
-        if (command.equals("find")) {
-            return processFindCommand(input, tasks);
-        }
-        if (command.equals("sort_todos")) {
-            return sortTodosWithResponse(tasks);
-        }
-        if (command.equals("sort_deadlines")) {
-            return sortDeadlinesWithResponse(tasks);
-        }
-        if (command.equals("sort_events")) {
-            return sortEventsWithResponse(tasks);
-        }
+            if (command.equals("bye")) {
+                String goodbyeMessage = storage.saveTasks(tasks.getTasks()) + "\n" + ui.getGoodbye();
 
-        Map<String, Function<String, String>> commands = initializeCommands(tasks, ui);
-        return commands.getOrDefault(command, (cmd) -> "sorry idk this command ;-;").apply(input);
+                ui.smoothExit();
+
+                return goodbyeMessage;
+            }
+            if (command.equals("list")) {
+                return tasks.getTaskListAsString();
+            }
+            if (command.equals("find")) {
+                return processFindCommand(input, tasks);
+            }
+            if (command.equals("sort_todos")) {
+                return sortTodosWithResponse(tasks);
+            }
+            if (command.equals("sort_deadlines")) {
+                return sortDeadlinesWithResponse(tasks);
+            }
+            if (command.equals("sort_events")) {
+                return sortEventsWithResponse(tasks);
+            }
+
+            Map<String, Function<String, String>> commands = initializeCommands(tasks);
+            return commands.getOrDefault(command, (cmd) -> "sorry idk this command ;-;").apply(input);
+        } catch (IllegalArgumentException e) {
+            return ui.returnError(e.getMessage());
+        }
     }
 
     /**
@@ -70,7 +78,7 @@ public class Parser {
      * @param tasks TaskList containing tasks.
      * @return A map of command strings to processing functions.
      */
-    private static Map<String, Function<String, String>> initializeCommands(TaskList tasks, Ui ui) {
+    private static Map<String, Function<String, String>> initializeCommands(TaskList tasks) {
         Map<String, Function<String, String>> commands = new HashMap<>();
         commands.put("mark", tasks::markTaskWithResponse);
         commands.put("unmark", tasks::unmarkTaskWithResponse);
@@ -149,22 +157,22 @@ public class Parser {
      */
     private static String addDeadlineWithResponse(TaskList tasks, String input) {
         if (!input.contains("/by")) {
-            return ui.returnError("you can't have a deadline without a deadline, add a /by date (•︿•)");
+            throw new IllegalArgumentException("you can't have a deadline without a deadline, add a /by date (•︿•)");
         }
 
         String[] parts = input.split(" /by ", 2);
         if (parts.length < 2 || parts[1].trim().isEmpty()) {
-            return ui.returnError("deadline's description or date cannot be empty, pls add one (°△°)!!");
+            throw new IllegalArgumentException("deadline's description or date cannot be empty, pls add one (°△°)!!");
         }
 
         String description = parts[0].replaceFirst("^deadline\\s*", "").trim();
         if (description.isEmpty()) {
-            return ui.returnError("deadline's description cannot be empty, pls add one (°△°)!!");
+            throw new IllegalArgumentException("deadline's description cannot be empty, pls add one (°△°)!!");
         }
 
         String deadline = parts[1].trim();
         if (!deadline.matches(DATE_FORMAT)) {
-            return ui.returnError("deadline must be in yyyy-MM-dd HHmm format (•¬•)!");
+            throw new IllegalArgumentException("deadline must be in yyyy-MM-dd HHmm format (•¬•)!");
         }
 
         Task newTask = new Deadline(description, deadline);
@@ -180,23 +188,23 @@ public class Parser {
      */
     private static String addEventWithResponse(TaskList tasks, String input) {
         if (!input.contains(" /from ") || !input.contains(" /to ")) {
-            return ui.returnError("i need to know when your event starts and ends,\n"
+            throw new IllegalArgumentException("i need to know when your event starts and ends,\n"
                     + "pls add both a /from and /to (•︿•)");
         }
 
         String[] firstSplit = input.split(" /from ", 2);
         if (firstSplit.length < 2 || firstSplit[1].trim().isEmpty()) {
-            return ui.returnError("event's description or start time cannot be empty, pls add one (°△°)!!");
+            throw new IllegalArgumentException("event description or start time cannot be empty, pls add one (°△°)!!");
         }
 
         String description = firstSplit[0].replaceFirst("^event\\s*", "").trim();
         if (description.isEmpty()) {
-            return ui.returnError("event's description cannot be empty, pls add one (•¬•)");
+            throw new IllegalArgumentException("event's description cannot be empty, pls add one (•¬•)");
         }
 
         String[] secondSplit = firstSplit[1].split(" /to ", 2);
         if (secondSplit.length < 2 || secondSplit[1].trim().isEmpty()) {
-            return ui.returnError("i need to know when your event starts and ends,\n"
+            throw new IllegalArgumentException("i need to know when your event starts and ends,\n"
                     + "pls add both a /from and /to (•︿•)");
         }
 
@@ -204,7 +212,7 @@ public class Parser {
         String to = secondSplit[1].trim();
 
         if (!from.matches(DATE_FORMAT) || !to.matches(DATE_FORMAT)) {
-            return ui.returnError("event times must be in yyyy-MM-dd HHmm format (•¬•)!");
+            throw new IllegalArgumentException("event times must be in yyyy-MM-dd HHmm format (•¬•)!");
         }
 
         Task newTask = new Event(description, from, to);

@@ -1,30 +1,44 @@
-# woogie.Woogie User Guide
+# Woogie User Guide
 
-// Update the title above to match the actual product name
+![Ui.png](Ui.png)
 
-// Product screenshot goes here
+What is Woogie?
+Woogie is THE task manager chatbot that keeps track of your tasks. It is:
 
-// Product intro goes here
+- Easy to use
+- Fast
+- Efficient
 
-## Adding deadlines
+## Features
+### Adding tasks
+Commands:
+1. Add ToDos: `todo description`
+2. Add Deadlines: `deadline description /by yyyy-MM-dd`
+3. Add Events: `event description /from yyyy-MM-dd /to yyyy-MM-dd`
 
-// Describe the action and its outcome.
+### Listing
+The `list` command expects a list of the tasks currently stored.
 
-// Give examples of usage
-
-Example: `keyword (optional arguments)`
-
-// A description of the expected outcome goes here
-
+For example, 
 ```
-expected output
+1. [T][] one
+2. [T][] two
 ```
 
-## Feature ABC
+### Marking & Unmarking
+1. `mark task_number`
+2. `unmark task_number`
 
-// Feature details
+### Delete
+`delete task_number`
 
+### Search
+`find task_number`
 
-## Feature XYZ
+### Sort
+1. `sort_todos` sorts and returns the tasks of ToDo type alphabetically.
+2. `sort_deadlines` sorts and returns the tasks of Deadline type in chronological order of the by date.
+3. `sort_events` sorts and returns the tasks of Event type in chronological order of the from date.
 
-// Feature details
+### Close
+The `bye` command saves all your tasks and cleanly exits the chatbot. Your tasks will be ready for your next vist!
