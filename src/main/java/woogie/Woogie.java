@@ -26,6 +26,8 @@ public class Woogie {
         tasks = new TaskList(storage.loadTasks());
 
         assert tasks != null : "TaskList should not be null after loading tasks!";
+        assert storage != null : "Storage should not be null after initialising Woogie!";
+        assert ui != null : "Ui should not be null after initialising Woogie!";
     }
 
     /**

@@ -1,2 +1,0 @@
-T | 0 | purchase tea leaves
-E | 0 | run to oppa | 2025-06-07 0400 | 2027-04-04 2100
