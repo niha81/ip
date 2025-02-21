@@ -13,8 +13,8 @@ Woogie is THE task manager chatbot that keeps track of your tasks. It is:
 ### Adding tasks
 Commands:
 1. Add ToDos: `todo description`
-2. Add Deadlines: `deadline description /by yyyy-MM-dd`
-3. Add Events: `event description /from yyyy-MM-dd /to yyyy-MM-dd`
+2. Add Deadlines: `deadline description /by yyyy-MM-dd HHmm`
+3. Add Events: `event description /from yyyy-MM-dd HHmm /to yyyy-MM-dd HHmm`
 
 ### Listing
 The `list` command expects a list of the tasks currently stored.
