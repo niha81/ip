@@ -1,26 +1,44 @@
-# woogie.Woogie project template
+# Woogie User Guide
 
-This is a project template for a greenfield Java project. It's named after the Java mascot _Duke_. Given below are instructions on how to use it.
+> Aspire to be young and rich, tall and handsome? Woogie is what you need! - ME
 
-## Setting up in Intellij
+What is Woogie?
+Woogie is THE task manager chatbot that keeps track of your tasks. It is:
 
-Prerequisites: JDK 17, update Intellij to the most recent version.
+- Easy to use
+- Fast
+- Efficient
 
-1. Open Intellij (if you are not in the welcome screen, click `File` > `Close Project` to close the existing project first)
-1. Open the project into Intellij as follows:
-   1. Click `Open`.
-   1. Select the project directory, and click `OK`.
-   1. If there are any further prompts, accept the defaults.
-1. Configure the project to use **JDK 17** (not other versions) as explained in [here](https://www.jetbrains.com/help/idea/sdk.html#set-up-jdk).<br>
-   In the same dialog, set the **Project language level** field to the `SDK default` option.
-1. After that, locate the `src/main/java/woogie.Woogie.java` file, right-click it, and choose `Run woogie.Woogie.main()` (if the code editor is showing compile errors, try restarting the IDE). If the setup is correct, you should see something like the below as the output:
-   ```
-   Hello from
-    ____        _        
-   |  _ \ _   _| | _____ 
-   | | | | | | | |/ / _ \
-   | |_| | |_| |   <  __/
-   |____/ \__,_|_|\_\___|
-   ```
+## Features
+### Adding tasks
+Commands:
+1. Add ToDos: `todo description`
+2. Add Deadlines: `deadline description /by yyyy-MM-dd HHmm`
+3. Add Events: `event description /from yyyy-MM-dd HHmm /to yyyy-MM-dd HHmm`
 
-**Warning:** Keep the `src\main\java` folder as the root folder for Java files (i.e., don't rename those folders or move Java files to another folder outside of this folder path), as this is the default location some tools (e.g., Gradle) expect to find Java files.
+### Listing
+The `list` command expects a list of the tasks currently stored.
+
+For example, 
+```
+1. [T][] one
+2. [T][] two
+```
+
+### Marking & Unmarking
+1. `mark [task number]`
+2. `unmark [task number]`
+
+### Delete
+`delete [task number]`
+
+### Find
+`find [keyword]`
+
+### Sort
+1. `sort_todos` sorts and returns the tasks of ToDo type alphabetically.
+2. `sort_deadlines` sorts and returns the tasks of Deadline type in chronological order of the by date.
+3. `sort_events` sorts and returns the tasks of Event type in chronological order of the from date.
+
+### Close
+The `bye` command saves all your tasks and cleanly exits the chatbot. Your tasks will be ready for your next vist!
