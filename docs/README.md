@@ -26,14 +26,14 @@ For example,
 ```
 
 ### Marking & Unmarking
-1. `mark task_number`
-2. `unmark task_number`
+1. `mark [task number]`
+2. `unmark [task number]`
 
 ### Delete
-`delete task_number`
+`delete [task number]`
 
-### Search
-`find task_number`
+### Find
+`find [keyword]`
 
 ### Sort
 1. `sort_todos` sorts and returns the tasks of ToDo type alphabetically.

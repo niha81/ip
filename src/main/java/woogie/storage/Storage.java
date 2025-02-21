@@ -40,7 +40,7 @@ public class Storage {
             }
             writer.close();
 
-            return "Tasks saved successfully •ᴗ•!";
+            return "Tasks saved successfully >w<!";
         } catch (IOException e) {
             return "Error saving tasks: " + e.getMessage();
         }

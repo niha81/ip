@@ -27,14 +27,14 @@ public class Ui {
      * Returns the chatbot's greeting message.
      */
     public String getGreeting() {
-        return "* Greetings! I'm Woogie *･ﾟ✧\n" + " How can I help you?";
+        return "* Greetings! I'm Woogie **\n" + " How can I help you?";
     }
 
     /**
      * Returns the chatbot's farewell message.
      */
     public String getGoodbye() {
-        return "It pains me to have to part ways ૮(ㅠ-ㅠ).\nHope to see you again soon!";
+        return "It pains me to have to part ways [T-T].\nHope to see you again soon!";
     }
 
     /**
@@ -59,7 +59,7 @@ public class Ui {
      * Exits the application smoothly by introducing a short delay before closing.
      * */
     public void smoothExit() {
-        PauseTransition delay = new PauseTransition(Duration.millis(750));
+        PauseTransition delay = new PauseTransition(Duration.millis(2000));
         delay.setOnFinished(event -> Platform.exit());
         delay.play();
     }

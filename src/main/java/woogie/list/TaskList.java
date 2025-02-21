@@ -45,7 +45,7 @@ public class TaskList {
      */
     public String getTaskListAsString() {
         if (tasks.isEmpty()) {
-            return "nothing here yet TT";
+            return "> nothing here yet TT\n";
         }
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < tasks.size(); i++) {
@@ -89,10 +89,10 @@ public class TaskList {
             return ui.returnError("Task number must be a valid number :)");
         }
         if (taskIndex < 0 || taskIndex >= tasks.size()) {
-            return ui.returnError("INVALID! pls choose a task between 1 and " + tasks.size() + " (•⌓•).");
+            return ui.returnError("INVALID! pls choose a task between 1 and " + tasks.size() + " (0n0).");
         }
         tasks.get(taskIndex).markDone();
-        return ui.returnMessage("Nice! I've marked this task as done:\n  " + tasks.get(taskIndex) + "\n⸜( ˃ ᵕ ˂ )⸝");
+        return ui.returnMessage("Nice! I've marked this task as done:\n  " + tasks.get(taskIndex) + "\n(>u<)");
     }
 
     /**
@@ -110,10 +110,10 @@ public class TaskList {
             return ui.returnError("Task number must be a valid number :)");
         }
         if (taskIndex < 0 || taskIndex >= tasks.size()) {
-            return ui.returnError("INVALID! pls choose a task between 1 and " + tasks.size() + " (•⌓•)");
+            return ui.returnError("INVALID! pls choose a task between 1 and " + tasks.size() + " (0n0)");
         }
         tasks.get(taskIndex).markUndone();
-        return ui.returnMessage("Nice! I've marked this task as done:\n  " + tasks.get(taskIndex) + "\n⸜( ˃ ᵕ ˂ )⸝");
+        return ui.returnMessage("Nice! I've marked this task as not done:\n  " + tasks.get(taskIndex) + "\n(>u<)");
     }
 
     /**
@@ -127,7 +127,7 @@ public class TaskList {
 
         tasks.add(newTask);
         return "Oki. I've added this task:\n  " + newTask + "\nNow you have " + tasks.size()
-                + " tasks in the list (˃ᴗ˂)♡";
+                + " tasks in the list (>o<)<3";
     }
 
     /**
@@ -145,12 +145,12 @@ public class TaskList {
             return ui.returnError("Task number must be a valid number :)");
         }
         if (taskIndex < 0 || taskIndex >= tasks.size()) {
-            return ui.returnError("INVALID! pls choose a task between 1 and " + tasks.size() + " (•⌓•)");
+            return ui.returnError("INVALID! pls choose a task between 1 and " + tasks.size() + " (0 _ 0)");
         }
 
         Task rem = tasks.remove(taskIndex);
         return "Noted. I've removed this task:\n  " + rem + "\nNow you have " + tasks.size()
-                + " tasks in the list ( ˃ ᵕ ˂ )♡";
+                + " tasks in the list (>o<)<3";
     }
 
     /**

@@ -99,7 +99,7 @@ public class Parser {
     private static String processFindCommand(String input, TaskList tasks) {
         String keyword = extractFindKeyword(input);
         if (keyword.isEmpty()) {
-            return ui.returnError("Please enter a keyword to search for (•¬•)");
+            return ui.returnError("Please enter a keyword to search for (0_0)");
         }
         return tasks.findTaskWithResponse(keyword);
     }
@@ -128,7 +128,7 @@ public class Parser {
     private static String addTodoWithResponse(TaskList tasks, String input) {
         String description = extractTaskDescription(input, "todo");
         if (description.isEmpty()) {
-            return ui.returnError("todo's description cannot be empty, pls add one (•¬•)");
+            return ui.returnError("todo's description cannot be empty, pls add one (0_0)");
         }
         Task newTask = new ToDo(description);
         return tasks.addTaskWithResponse(newTask);
@@ -157,22 +157,22 @@ public class Parser {
      */
     private static String addDeadlineWithResponse(TaskList tasks, String input) {
         if (!input.contains("/by")) {
-            throw new IllegalArgumentException("you can't have a deadline without a deadline, add a /by date (•︿•)");
+            throw new IllegalArgumentException("you can't have a deadline without a deadline, add a /by date (O^O)");
         }
 
         String[] parts = input.split(" /by ", 2);
         if (parts.length < 2 || parts[1].trim().isEmpty()) {
-            throw new IllegalArgumentException("deadline's description or date cannot be empty, pls add one (°△°)!!");
+            throw new IllegalArgumentException("deadline's description or date cannot be empty, pls add one (O^O)!!");
         }
 
         String description = parts[0].replaceFirst("^deadline\\s*", "").trim();
         if (description.isEmpty()) {
-            throw new IllegalArgumentException("deadline's description cannot be empty, pls add one (°△°)!!");
+            throw new IllegalArgumentException("deadline's description cannot be empty, pls add one (O^O)!!");
         }
 
         String deadline = parts[1].trim();
         if (!deadline.matches(DATE_FORMAT)) {
-            throw new IllegalArgumentException("deadline must be in yyyy-MM-dd HHmm format (•¬•)!");
+            throw new IllegalArgumentException("deadline must be in yyyy-MM-dd HHmm format (0_0)!");
         }
 
         Task newTask = new Deadline(description, deadline);
@@ -189,30 +189,30 @@ public class Parser {
     private static String addEventWithResponse(TaskList tasks, String input) {
         if (!input.contains(" /from ") || !input.contains(" /to ")) {
             throw new IllegalArgumentException("i need to know when your event starts and ends,\n"
-                    + "pls add both a /from and /to (•︿•)");
+                    + "pls add both a /from and /to (O^O)");
         }
 
         String[] firstSplit = input.split(" /from ", 2);
         if (firstSplit.length < 2 || firstSplit[1].trim().isEmpty()) {
-            throw new IllegalArgumentException("event description or start time cannot be empty, pls add one (°△°)!!");
+            throw new IllegalArgumentException("event description or start time cannot be empty, pls add one (O^O)!!");
         }
 
         String description = firstSplit[0].replaceFirst("^event\\s*", "").trim();
         if (description.isEmpty()) {
-            throw new IllegalArgumentException("event's description cannot be empty, pls add one (•¬•)");
+            throw new IllegalArgumentException("event's description cannot be empty, pls add one (0_0)");
         }
 
         String[] secondSplit = firstSplit[1].split(" /to ", 2);
         if (secondSplit.length < 2 || secondSplit[1].trim().isEmpty()) {
             throw new IllegalArgumentException("i need to know when your event starts and ends,\n"
-                    + "pls add both a /from and /to (•︿•)");
+                    + "pls add both a /from and /to ('^')");
         }
 
         String from = secondSplit[0].trim();
         String to = secondSplit[1].trim();
 
         if (!from.matches(DATE_FORMAT) || !to.matches(DATE_FORMAT)) {
-            throw new IllegalArgumentException("event times must be in yyyy-MM-dd HHmm format (•¬•)!");
+            throw new IllegalArgumentException("event times must be in yyyy-MM-dd HHmm format (0_0)!");
         }
 
         Task newTask = new Event(description, from, to);
@@ -222,18 +222,18 @@ public class Parser {
     private static String sortTodosWithResponse(TaskList tasks) {
         TaskList sortedTodos = tasks.getAlphabeticalTodos();
         return ui.returnMessage("Here are the todos sorted alphabetically:\n"
-                + sortedTodos.getTaskListAsString() + "You have some work to do (≧ᗜ≦)!!");
+                + sortedTodos.getTaskListAsString() + "You have some work to do (>u<)!!");
     }
 
     private static String sortDeadlinesWithResponse(TaskList tasks) {
         TaskList sortedDeadlines = tasks.getChronologicalDeadlines();
         return ui.returnMessage("Here are the deadlines sorted chronologically:\n"
-                + sortedDeadlines.getTaskListAsString() + "Lets get to work (๑•̀ ᴗ•́)૭✧");
+                + sortedDeadlines.getTaskListAsString() + "Lets get to work (0 v 0)");
     }
 
     private static String sortEventsWithResponse(TaskList tasks) {
         TaskList sortedEvents = tasks.getChronologicalEvents();
         return ui.returnMessage("Here are the events sorted by start date:\n"
-                + sortedEvents.getTaskListAsString() + "Hope you get them done ⚝");
+                + sortedEvents.getTaskListAsString() + "Hope you get them done *v*");
     }
 }
